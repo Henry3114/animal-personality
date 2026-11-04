@@ -82,6 +82,21 @@
                background:#FCEEE2; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .duo .disc img { width:100%; height:100%; object-fit:contain; padding:4px; }
   .duo .nm { font-size:30px; font-weight:700; letter-spacing:3px; margin-top:12px; color:#6E6358; text-align:center; }
+
+  /* ---------- 依据卡 ---------- */
+  .why-title { font-size:72px; font-weight:800; letter-spacing:2px; line-height:1.38; color:#2E2A24; }
+  .why { display:flex; flex-direction:column; gap:42px; }
+  .why-item { display:flex; gap:22px; }
+  .why-no { flex:0 0 52px; padding-top:9px; font-size:24px; font-weight:800;
+            letter-spacing:1px; color:#D9784A; }
+  .why-bd { flex:1; }
+  .why-h { font-size:34px; font-weight:800; letter-spacing:1px; color:#2E2A24; }
+  .why-p { margin-top:10px; font-size:29px; line-height:1.82; font-weight:500; color:#6E6358; }
+  .why-quote { margin-top:56px; padding-top:34px; border-top:1px solid #F2E6D9;
+               text-align:center; font-size:40px; font-weight:800; line-height:1.5;
+               letter-spacing:1px; color:#C4633A; }
+  .why-foot { margin-top:26px; text-align:center; font-size:26px;
+              letter-spacing:2px; color:#A2958A; font-weight:600; }
 </style>
 </head>
 <body>
@@ -256,8 +271,49 @@
   </div>
 </div>
 
-<!-- 10 结尾 -->
+<!-- 10 依据 -->
 <div class="card" id="c10">
+  <div class="glow"></div>
+
+  <div class="stage" style="top:170px">
+    <div class="tag" style="letter-spacing:6px">为什么问的是「放弃」</div>
+  </div>
+
+  <div class="paper" style="top:300px; text-align:left">
+    <div class="divider" style="margin-bottom:40px"></div>
+    <div class="why-title">这套题<br>不是随口编的</div>
+
+    <div class="why" style="margin-top:46px">
+      <div class="why-item">
+        <div class="why-no">01</div>
+        <div class="why-bd">
+          <div class="why-h">原型 · 荣格</div>
+          <div class="why-p">动物是人类共有的心理底片。狮、马、牛、羊、猴，在寓言里站了几千年，各自背着一种活法。</div>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-no">02</div>
+        <div class="why-bd">
+          <div class="why-h">双层 · 主导与辅助</div>
+          <div class="why-p">你有一项用得最顺手的活法，还有一项替它兜底。《心理类型》把这叫主导与辅助，5 只主导 × 4 种底色，正好 20 种。</div>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-no">03</div>
+        <div class="why-bd">
+          <div class="why-h">投射 · 罗夏墨迹</div>
+          <div class="why-p">不问「你是谁」，只给一团墨迹、一幅看不清的画，让你自己填进去。这套题的处境是：水不够，你必须放弃。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-quote">放弃的顺序，<br>比自我描述诚实。</div>
+    <div class="why-foot">这不是心理诊断，只是一面镜子</div>
+  </div>
+</div>
+
+<!-- 11 结尾 -->
+<div class="card" id="c11">
   <div class="scene" style="background-image:url('assets/scenes/cute/footprints.webp')"></div>
   <div class="veil"></div>
   <div class="stage" style="top:130px">

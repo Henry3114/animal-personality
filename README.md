@@ -50,14 +50,15 @@ var PASSCODE = 'ap2026';  // 卡密，大小写不敏感
 
 ## 小红书图文
 
-10 张成品图由 `cards.html` 渲染，不在仓库里（体积大），本地生成：
+11 张成品图由 `cards.html` 渲染，不在仓库里（体积大），本地生成：
 
 ```bash
 python tools/cards.py          # 全部
 python tools/cards.py c3 c5    # 只出某几张
 ```
 
-- `cards.html`：10 张卡片模板，`#c1`—`#c10` 用 hash 定位，1242×1660
+- `cards.html`：11 张卡片模板，`#c1`—`#c11` 用 hash 定位，1242×1660
+- 卡片顺序：c1 封面 → c2—c6 六道题 → c7—c9 三个结果示例 → c10 理论依据 → c11 结尾
 - `tools/cards.py`：Playwright 逐张截图，输出到 `out/`
 - `assets/scenes/cute/`：Q 版沙漠插画（webp），一题一张
 - 发布文案、标题、话题、评论引导见 `out/文案.md`

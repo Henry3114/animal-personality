@@ -563,14 +563,14 @@ body::before {
 .five-row {
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 9px 0;
+  gap: 13px;
+  padding: 11px 0;
   border-bottom: 1px dashed var(--line);
 }
 .five-row:last-child { border-bottom: none; padding-bottom: 2px; }
 .five-av {
   flex: 0 0 auto;
-  width: 38px; height: 38px;
+  width: 56px; height: 56px;
   border-radius: 50%;
   background: var(--orange-soft);
   display: flex; align-items: center; justify-content: center;
@@ -579,18 +579,18 @@ body::before {
 .five-av img {
   width: 100%; height: 100%;
   object-fit: contain;
-  padding: 2px;
+  padding: 3px;
 }
 .five-name {
   flex: 0 0 auto;
   width: 1.7em;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: .1em;
   color: var(--ink);
 }
 .five-say {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.6;
   color: var(--ink-2);
 }
