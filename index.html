@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF7F0">
+<title>动物原型人格测试 · 五只动物里藏着你</title>
+<meta name="description" content="六道题，一片走不出去的沙漠。五只动物里，藏着一个你。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316232F'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='%23FAF7F0' font-family='SimSun,serif'%3E%E5%8A%A8%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-dune"></div>
+
+<main class="page cover">
+  <div class="cover-kicker">20 种动物人格原型</div>
+
+  <h1 class="cover-title">
+    <span>动物原型</span>
+    <span>人格测试</span>
+  </h1>
+
+  <p class="cover-sub">你和五只动物，走一遍沙漠</p>
+
+  <div class="cover-animals" id="coverAnimals"></div>
+
+  <div class="start-wrap">
+    <button class="btn btn-primary" id="startBtn">开始测试</button>
+  </div>
+
+  <div class="cover-foot">6 道题 · 1 分钟 · 没有标准答案</div>
+</main>
+
+<!-- 卡密门禁 -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="gate-mark">测</div>
+    <div class="gate-title">输入卡密</div>
+    <p class="gate-desc">测试为付费内容<br>请输入购买时收到的卡密</p>
+    <input class="gate-input" id="gateInput" type="text" inputmode="latin"
+           placeholder="卡密" maxlength="24" autocomplete="off" spellcheck="false">
+    <button class="btn btn-primary gate-btn" id="gateBtn">进入</button>
+    <div class="gate-err" id="gateErr">卡密不对，请再试一次</div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ===== 配置 ===== */
+  var GATE_ON  = true;          // 想完全免费开放，把它改成 false
+  var PASSCODE = 'ap2026';      // 卡密（大小写不敏感）
+  var KEY_GATE = 'ap_gate';
+  var KEY_ANSW = 'ap_answers';
+
+  /* ===== 渲染封面五只动物 ===== */
+  var box = document.getElementById('coverAnimals');
+  ANIMALS.forEach(function (a) {
+    var d = document.createElement('div');
+    d.className = 'cover-animal';
+    d.innerHTML = '<img src="assets/animals/clean/' + a.id + '.webp" alt="' + a.name + '">' +
+                  '<span>' + a.name + '</span>';
+    box.appendChild(d);
+  });
+
+  /* ===== 按钮状态 ===== */
+  var startBtn = document.getElementById('startBtn');
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY_ANSW) || 'null'); } catch (e) {}
+  if (saved && saved[1]) {
+    startBtn.textContent = '查看我的结果';
+    startBtn.addEventListener('click', function () {
+      location.href = 'result.html';
+    });
+    var again = document.createElement('button');
+    again.className = 'btn btn-ghost';
+    again.style.marginTop = '10px';
+    again.textContent = '重新测一次';
+    again.addEventListener('click', function () {
+      localStorage.removeItem(KEY_ANSW);
+      location.href = 'test.html';
+    });
+    startBtn.parentNode.appendChild(again);
+  } else {
+    startBtn.addEventListener('click', function () {
+      location.href = 'test.html';
+    });
+  }
+
+  /* ===== 卡密门禁 ===== */
+  var gate = document.getElementById('gate');
+  var input = document.getElementById('gateInput');
+  var btn = document.getElementById('gateBtn');
+  var err = document.getElementById('gateErr');
+
+  function unlocked() {
+    try { return sessionStorage.getItem(KEY_GATE) === '1'; } catch (e) { return false; }
+  }
+
+  if (!GATE_ON || unlocked()) {
+    gate.classList.add('hide');
+  } else {
+    setTimeout(function () { input.focus(); }, 260);
+  }
+
+  function verify() {
+    var v = (input.value || '').trim().toLowerCase();
+    if (!v) { input.focus(); return; }
+    if (v === PASSCODE.toLowerCase()) {
+      try { sessionStorage.setItem(KEY_GATE, '1'); } catch (e) {}
+      gate.classList.add('hide');
+    } else {
+      err.classList.add('show');
+      input.value = '';
+      input.focus();
+      setTimeout(function () { err.classList.remove('show'); }, 2200);
+    }
+  }
+
+  btn.addEventListener('click', verify);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') verify(); });
+})();
+</script>
+</body>
+</html>

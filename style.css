@@ -1,0 +1,602 @@
+/* ============================================================
+   动物原型人格测试 · 全站样式
+   配色：米白纸底 / 蓝灰沙丘 / 墨色文字 / 少量赤陶橙
+   ============================================================ */
+
+:root {
+  --paper: #FAF7F0;
+  --paper-2: #F2EDE2;
+  --card: #FFFDF8;
+  --ink: #16232F;
+  --ink-2: #3D5870;
+  --ink-3: #7891A5;
+  --blue: #4A6579;
+  --blue-light: #CFE0EC;
+  --accent: #B5502E;
+  --line: rgba(22, 35, 47, .13);
+  --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* 纸张颗粒 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+  opacity: .5;
+  mix-blend-mode: multiply;
+  background-image: url('assets/noise.png');
+  background-size: 240px 240px;
+}
+
+/* ---------- 通用容器 ---------- */
+.page {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 0 26px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-dune {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #FAF7F0 url('assets/bg_desert.jpg') top center / 100% auto no-repeat;
+}
+@media (min-width: 560px) {
+  .bg-dune { background-size: auto 100%; background-position: center top; }
+}
+
+/* ---------- 封面 ---------- */
+.cover { padding-top: 72px; padding-bottom: 44px; text-align: center; }
+
+.cover-kicker {
+  font-size: 13px;
+  letter-spacing: .34em;
+  color: var(--ink-3);
+  text-indent: .34em;
+  margin-bottom: 22px;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: 54px;
+  line-height: 1.22;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--ink);
+}
+.cover-title span { display: block; }
+
+.cover-sub {
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--ink-2);
+  letter-spacing: .08em;
+}
+
+/* 五只动物 */
+.cover-animals {
+  margin-top: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+}
+.cover-animal {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cover-animal img {
+  width: 100%;
+  height: 74px;
+  object-fit: contain;
+}
+.cover-animal span {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--ink);
+}
+
+.cover-foot {
+  margin-top: 44px;
+  padding-top: 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  letter-spacing: .18em;
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 17px 24px;
+  border: none;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 16.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+.btn-primary {
+  background: var(--ink);
+  color: #FBF7EE;
+  box-shadow: 0 8px 20px rgba(22, 35, 47, .18);
+}
+.btn-primary:active { transform: translateY(1px) scale(.99); box-shadow: 0 4px 12px rgba(22, 35, 47, .18); }
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1.5px solid var(--line);
+}
+.btn:disabled { opacity: .45; cursor: default; }
+
+.start-wrap { margin-top: 40px; }
+
+/* ---------- 卡密门禁 ---------- */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(250, 247, 240, .96);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity .3s ease, visibility .3s ease;
+}
+.gate.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.gate-box {
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+}
+.gate-mark {
+  width: 46px; height: 46px;
+  margin: 0 auto 20px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--ink);
+}
+.gate-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+.gate-desc {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--ink-3);
+  letter-spacing: .05em;
+}
+.gate-input {
+  width: 100%;
+  margin-top: 26px;
+  padding: 15px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  font-family: var(--sans);
+  font-size: 17px;
+  letter-spacing: .28em;
+  text-align: center;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .18s;
+}
+.gate-input:focus { border-color: var(--ink); }
+.gate-input::placeholder { letter-spacing: .05em; color: #B8C2CB; }
+.gate-btn { margin-top: 14px; }
+.gate-err {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.gate-err.show { opacity: 1; }
+
+/* ---------- 答题页 ---------- */
+.test-top {
+  padding-top: 34px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.step-count {
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+}
+.step-count b { font-size: 19px; color: var(--ink); font-weight: 700; }
+
+.progress {
+  margin-top: 12px;
+  height: 2px;
+  background: rgba(22, 35, 47, .1);
+  overflow: hidden;
+}
+.progress i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--ink);
+  transition: width .38s cubic-bezier(.4, 0, .2, 1);
+}
+
+.q-text {
+  margin-top: 40px;
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.9;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: var(--ink);
+  min-height: 118px;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.q-hint {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #4E6A7E;
+  letter-spacing: .06em;
+  font-weight: 500;
+}
+
+/* 动物选项 */
+.options {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.opt {
+  width: calc(50% - 6px);
+  padding: 16px 8px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  background: #FFFDF8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform .14s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
+  position: relative;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+.opt:active { transform: scale(.97); }
+.opt img {
+  height: 84px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  transition: filter .2s, opacity .2s, transform .2s;
+}
+.opt-name {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-indent: .18em;
+}
+.opt:last-child:nth-child(odd) {
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  gap: 14px;
+  padding: 14px 8px;
+}
+.opt:last-child:nth-child(odd) img { height: 74px; }
+.opt:last-child:nth-child(odd) .opt-name { margin-top: 0; font-size: 16px; }
+
+.opt.picked {
+  border-color: var(--ink);
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(22, 35, 47, .13);
+}
+
+/* 已放弃 */
+.opt.dead {
+  cursor: default;
+  background: rgba(22, 35, 47, .05);
+  border-color: rgba(22, 35, 47, .055);
+  box-shadow: none;
+  pointer-events: none;
+}
+.opt.dead img { opacity: .3; filter: grayscale(1) contrast(.7); }
+.opt.dead .opt-name {
+  color: #8DA2B2;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: #C6D1DA;
+}
+
+.test-foot {
+  margin-top: 34px;
+  padding: 0 0 34px;
+  text-align: center;
+}
+.link-back {
+  font-size: 13px;
+  color: var(--ink-3);
+  text-decoration: none;
+  letter-spacing: .08em;
+  border-bottom: 1px solid rgba(120, 145, 165, .35);
+  padding-bottom: 2px;
+}
+
+/* 转场 */
+.fade-in { animation: fadeIn .34s ease both; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- 结果页 ---------- */
+.result-page {
+  background: var(--paper);
+  padding-top: 0;
+  padding-bottom: 60px;
+}
+
+.res-head {
+  padding-top: 46px;
+  text-align: center;
+}
+.res-kicker {
+  font-size: 12px;
+  letter-spacing: .34em;
+  text-indent: .34em;
+  color: var(--ink-3);
+}
+.res-name {
+  margin-top: 16px;
+  font-family: var(--serif);
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-indent: .04em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.res-role {
+  margin-top: 12px;
+  font-size: 14px;
+  letter-spacing: .22em;
+  text-indent: .22em;
+  color: var(--ink-2);
+}
+
+.res-hero {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+.res-hero img {
+  width: 78%;
+  max-height: 230px;
+  object-fit: contain;
+}
+
+.res-combo {
+  margin-top: 4px;
+  text-align: center;
+}
+.res-combo-title {
+  font-family: var(--serif);
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: .04em;
+}
+.res-combo-line {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 2;
+  color: var(--ink-2);
+}
+
+/* 段落卡片 */
+.sec {
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+.sec-label {
+  font-size: 12px;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+}
+.sec-body {
+  font-size: 15.5px;
+  line-height: 2.05;
+  color: var(--ink);
+  letter-spacing: .01em;
+}
+
+.ul { list-style: none; }
+.ul li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 15.5px;
+  line-height: 1.95;
+  color: var(--ink);
+  margin-bottom: 7px;
+}
+.ul li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 13px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ink-3);
+}
+.ul.warn li::before { background: var(--accent); opacity: .7; }
+
+.quote {
+  padding: 16px 18px;
+  background: rgba(22, 35, 47, .035);
+  border-left: 2px solid var(--ink-3);
+  font-size: 15px;
+  line-height: 1.95;
+  color: var(--ink-2);
+}
+
+/* 放弃顺序 */
+.trail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.trail-node {
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: rgba(22, 35, 47, .06);
+  color: var(--ink-2);
+  letter-spacing: .1em;
+}
+.trail-node:last-child {
+  background: var(--ink);
+  color: #FBF7EE;
+}
+.trail-arrow { color: var(--ink-3); font-size: 12px; }
+
+/* 结果页底部操作 */
+.actions {
+  margin-top: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.actions .btn-ghost { background: rgba(255, 253, 248, .7); }
+
+.footnote {
+  margin-top: 26px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--ink-3);
+  letter-spacing: .04em;
+}
+
+/* 保存提示 */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%) translateY(16px);
+  padding: 12px 22px;
+  background: var(--ink);
+  color: #FBF7EE;
+  border-radius: 999px;
+  font-size: 13.5px;
+  letter-spacing: .08em;
+  opacity: 0;
+  transition: opacity .26s, transform .26s;
+  z-index: 200;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------- 小屏适配 ---------- */
+@media (max-width: 380px) {
+  .page { padding: 0 20px; }
+  .cover-title { font-size: 46px; }
+  .cover { padding-top: 56px; }
+  .q-text { font-size: 19.5px; min-height: 110px; }
+  .opt img { height: 70px; }
+  .res-name { font-size: 52px; }
+}
+
+@media (max-height: 700px) {
+  .cover { padding-top: 46px; }
+  .cover-animals { margin-top: 24px; }
+  .cover-animal img { height: 62px; }
+}
+
+/* 桌面端：卡片化居中 */
+@media (min-width: 560px) {
+  body { background: #EFEAE0; }
+  .page {
+    max-width: 460px;
+    background: transparent;
+    box-shadow: 0 0 60px rgba(22, 35, 47, .07);
+  }
+  .result-page { background: var(--paper); }
+}
+
+/* ---------- 矮屏（小屏手机 / 横屏）压缩，保证一屏内完成 ---------- */
+@media (max-height: 760px) {
+  .cover { padding-top: 38px; }
+  .cover-title { font-size: 44px; }
+  .cover-sub { margin-top: 12px; font-size: 14px; }
+  .cover-animals { margin-top: 22px; }
+  .cover-animal img { height: 58px; }
+  .cover-animal span { font-size: 12.5px; }
+  .start-wrap { margin-top: 26px; }
+  .cover-foot { margin-top: 24px; }
+
+  .test-top { padding-top: 20px; }
+  .q-text {
+    margin-top: 22px;
+    font-size: 18.5px;
+    line-height: 1.72;
+    min-height: 96px;
+  }
+  .q-hint { margin-top: 8px; font-size: 12px; }
+  .options { margin-top: 16px; gap: 9px; }
+  .opt { padding: 9px 6px 7px; border-radius: 13px; }
+  .opt img { height: 56px; }
+  .opt-name { font-size: 13.5px; margin-top: 2px; }
+  .opt:last-child:nth-child(odd) { padding: 8px 6px; }
+  .opt:last-child:nth-child(odd) img { height: 54px; }
+  .opt:last-child:nth-child(odd) .opt-name { font-size: 14.5px; }
+  .test-foot { margin-top: 14px; padding-bottom: 16px; }
+}

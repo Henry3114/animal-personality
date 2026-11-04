@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF7F0">
+<title>你的结果 · 动物原型人格测试</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316232F'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='%23FAF7F0' font-family='SimSun,serif'%3E%E5%8A%A8%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="page result-page">
+  <div class="res-head">
+    <div class="res-kicker">你的动物原型</div>
+    <h1 class="res-name" id="resName">—</h1>
+    <div class="res-role" id="resRole"></div>
+  </div>
+
+  <div class="res-hero"><img id="resImg" src="" alt=""></div>
+
+  <div class="res-combo">
+    <div class="res-combo-title" id="comboTitle"></div>
+    <p class="res-combo-line" id="comboLine"></p>
+  </div>
+
+  <section class="sec">
+    <div class="sec-label">你是这样的人</div>
+    <p class="sec-body" id="desc"></p>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">核心优势</div>
+    <ul class="ul" id="strengths"></ul>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">可能会绊住你的</div>
+    <ul class="ul warn" id="blind"></ul>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">撑不住的时候</div>
+    <p class="quote" id="stress"></p>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">给你的建议</div>
+    <p class="sec-body" id="advice"></p>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">你身上的另一只</div>
+    <p class="sec-body" id="baseLine"></p>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">你放弃它们的顺序</div>
+    <div class="trail" id="trail"></div>
+  </section>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="saveBtn">保存结果图</button>
+    <button class="btn btn-ghost" id="againBtn">再测一次</button>
+  </div>
+
+  <p class="footnote">
+    这是一份自我探索的参考，不是心理诊断。<br>
+    没有标准答案，也没有更好的动物。
+  </p>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="result.js"></script>
+</body>
+</html>
