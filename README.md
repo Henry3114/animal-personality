@@ -87,6 +87,16 @@ data URI（约 144KB），页面直接用它当 `src`，**不再有单独的图�
 改文案直接改 `cards.html` 里的中文；换结果组合改 c7/c8/c9 的
 `typeName` / `typeSub` / `punch` / `traits`，全文在 `data.js` 的 `COMBOS`。
 
+## 截图
+
+```bash
+python -m http.server 8099      # 另开一个终端
+python tools/shots.py
+```
+
+出一套 9 张，覆盖门禁 / 封面 / 介绍页 / 答题 / 已放弃 / 结果首屏 / 结果整页 /
+导出长图 / 介绍页桌面版。文件名固定，重跑覆盖，`shots/` 里永远只有这一套。
+
 ## 部署
 
 纯静态，推送到 GitHub 后开启 Pages（main 分支根目录）即可。

@@ -1,55 +1,85 @@
-"""只截关键页面，便于视觉核对"""
-import sys
-from playwright.sync_api import sync_playwright
+"""出一套当前版本的网站截图，覆盖：门禁 / 封面 / 介绍页 / 答题 / 已放弃 / 结果 / 桌面。
+命名固定，重跑会覆盖，目录里永远只有这一套。
+"""
+import asyncio
+from playwright.async_api import async_playwright
 
-BASE = "http://127.0.0.1:8811"
-OUT = r"D:\ai\animal-personality\shots"
+BASE = "http://127.0.0.1:8099/"
+OUT = "shots/"
+V = {"width": 390, "height": 844}
 
-with sync_playwright() as p:
-    b = p.chromium.launch(channel="chrome", headless=True)
-    ctx = b.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=2,
-                        is_mobile=True, has_touch=True, accept_downloads=True)
-    pg = ctx.new_page()
-    logs = []
-    pg.on("console", lambda m: logs.append(m.type + ":" + m.text) if m.type in ("error", "warning") else None)
-    pg.on("pageerror", lambda e: logs.append("PAGEERROR:" + str(e)))
 
-    pg.goto(BASE + "/index.html", wait_until="networkidle")
-    pg.screenshot(path=OUT + r"\01_gate.png")
-    pg.fill("#gateInput", "ap2026"); pg.click("#gateBtn")
-    pg.wait_for_timeout(900)
-    pg.screenshot(path=OUT + r"\02_cover.png")
+async def mobile(b):
+    ctx = await b.new_context(viewport=V, device_scale_factor=2, accept_downloads=True)
+    pg = await ctx.new_page()
+    errs = []
+    pg.on("pageerror", lambda e: errs.append(str(e)))
 
-    pg.click("#startBtn"); pg.wait_for_url("**/test.html")
-    pg.wait_for_timeout(700)
-    pg.screenshot(path=OUT + r"\03_q1.png")
+    # 01 门禁
+    await pg.goto(BASE + "index.html", wait_until="networkidle")
+    await pg.wait_for_timeout(500)
+    await pg.screenshot(path=OUT + "01_门禁.png")
 
-    for i, name in enumerate(["羊", "猴", "牛", "马", "马", "马"]):
-        pg.click(f".opt:not(.dead) >> text={name}")
-        pg.wait_for_timeout(430)
-        if i == 0:
-            pg.screenshot(path=OUT + r"\04_q2_dead.png")
-        if i == 2:
-            pg.screenshot(path=OUT + r"\05_q4_take.png")
+    # 02 封面
+    await pg.fill("#gateInput", "ap2026")
+    await pg.click("#gateBtn")
+    await pg.wait_for_timeout(500)
+    await pg.screenshot(path=OUT + "02_封面.png")
 
-    pg.wait_for_url("**/result.html", timeout=8000)
-    pg.wait_for_timeout(1200)
-    pg.screenshot(path=OUT + r"\06_result_top.png")
-    pg.screenshot(path=OUT + r"\07_result_full.png", full_page=True)
+    # 03 介绍页
+    await pg.click("#startBtn")
+    await pg.wait_for_url("**/intro.html")
+    await pg.wait_for_timeout(500)
+    await pg.screenshot(path=OUT + "03_介绍页.png")
 
-    with pg.expect_download(timeout=20000) as dl:
-        pg.click("#saveBtn")
-    dl.value.save_as(OUT + r"\08_tallcard.png")
+    # 04 答题：第 1 题
+    await pg.click("#goBtn")
+    await pg.wait_for_url("**/test.html")
+    await pg.wait_for_timeout(600)
+    await pg.screenshot(path=OUT + "04_答题_第1题.png")
 
-    # 小屏 360x640 兜底检查
-    ctx2 = b.new_context(viewport={"width": 360, "height": 640}, device_scale_factor=2,
-                         is_mobile=True, has_touch=True)
-    p2 = ctx2.new_page()
-    p2.goto(BASE + "/index.html", wait_until="networkidle")
-    p2.fill("#gateInput", "ap2026"); p2.click("#gateBtn"); p2.wait_for_timeout(800)
-    p2.screenshot(path=OUT + r"\09_cover_small.png")
-    p2.click("#startBtn"); p2.wait_for_url("**/test.html"); p2.wait_for_timeout(700)
-    p2.screenshot(path=OUT + r"\10_q1_small.png")
+    # 05 答题：放弃一只之后（第 1 题的动物变灰）
+    await pg.locator(".opt:not(.dead)").first.click()
+    await pg.wait_for_timeout(500)
+    await pg.screenshot(path=OUT + "05_答题_已放弃.png")
 
-    print("console:", logs if logs else "clean")
-    b.close()
+    # 06 / 07 结果页
+    for _ in range(5):
+        usable = pg.locator(".opt:not(.dead)")
+        if await usable.count() == 0:
+            break
+        await usable.first.click()
+        await pg.wait_for_timeout(320)
+    await pg.wait_for_url("**/result.html", timeout=10000)
+    await pg.wait_for_timeout(900)
+    await pg.screenshot(path=OUT + "06_结果_首屏.png")
+    await pg.screenshot(path=OUT + "07_结果_整页.png", full_page=True)
+
+    # 08 导出的结果长图（点「保存结果图」直接落盘）
+    async with pg.expect_download(timeout=20000) as dl:
+        await pg.click("#saveBtn")
+    await (await dl.value).save_as(OUT + "08_结果_导出长图.png")
+
+    print("移动端 7 张完成，错误:", errs[:3])
+    await ctx.close()
+
+
+async def desktop(b):
+    ctx = await b.new_context(viewport={"width": 1280, "height": 900}, device_scale_factor=2)
+    pg = await ctx.new_page()
+    await pg.goto(BASE + "intro.html", wait_until="networkidle")
+    await pg.wait_for_timeout(500)
+    await pg.screenshot(path=OUT + "09_介绍页_桌面.png")
+    print("桌面端 1 张完成")
+    await ctx.close()
+
+
+async def main():
+    async with async_playwright() as p:
+        b = await p.chromium.launch(channel="chrome")
+        await mobile(b)
+        await desktop(b)
+        await b.close()
+
+
+asyncio.run(main())
