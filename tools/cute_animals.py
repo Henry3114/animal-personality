@@ -109,11 +109,30 @@ for name, fn in MAP.items():
     rgba = normalize(cut_bg(im), PER.get(name, 1.0), BLEED.get(name, 1.0))
     rgba.save(os.path.join(OUT, name + ".png"))
 
+    # 站内最大显示：结果页大圆 112px（@3x=336）、长图 208px。
+    # 400px 足够，且便于整体内联进 JS，避免国内访问 github.io 时图片请求丢失
     small = rgba.copy()
-    small.thumbnail((760, 760), Image.LANCZOS)
-    small.save(os.path.join(OUT, name + ".webp"), "WEBP", quality=92, method=6)
+    small.thumbnail((400, 400), Image.LANCZOS)
+    small.save(os.path.join(OUT, name + ".webp"), "WEBP", quality=88, method=6)
 
     cov = (np.asarray(rgba.split()[3]) > 40).mean()
     print(f"{name:7s} {rgba.size} 覆盖率 {cov*100:4.1f}%  "
           f"png {os.path.getsize(os.path.join(OUT, name + '.png'))//1024}KB  "
           f"webp {os.path.getsize(os.path.join(OUT, name + '.webp'))//1024}KB")
+
+
+# 生成内联图：5 张头像合成一个 JS，页面零图片请求
+import base64, json
+
+inline = {}
+for name in MAP:
+    with open(os.path.join(OUT, name + ".webp"), "rb") as f:
+        inline[name] = "data:image/webp;base64," + base64.b64encode(f.read()).decode()
+
+js = ("/* 自动生成，勿手改：python tools/cute_animals.py\n"
+      "   头像内联为 data URI，避免网络不好时个别图片加载失败 */\n"
+      "window.ANIMAL_IMG = " + json.dumps(inline, ensure_ascii=False) + ";\n")
+with open(r"D://ai//animal-personality//assets//animals//cute-images.js", "w", encoding="utf-8") as f:
+    f.write(js)
+
+print("内联 JS", os.path.getsize(r"D://ai//animal-personality//assets//animals//cute-images.js") // 1024, "KB")

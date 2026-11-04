@@ -54,6 +54,13 @@ var ANIMALS = [
 var ANIMAL_MAP = {};
 ANIMALS.forEach(function (a) { ANIMAL_MAP[a.name] = a; });
 
+/* 头像地址：优先用 cute-images.js 里内联的 data URI，缺失时才回退到文件路径。
+   国内访问 github.io 时常有个别图片请求失败，内联后不再依赖网络。 */
+function ANIMAL_SRC(id) {
+  var m = window.ANIMAL_IMG;
+  return (m && m[id]) || ('assets/animals/cute/' + id + '.webp');
+}
+
 /* 20 组组合文案：主导 × 底色 */
 var COMBOS = {
   '狮·马': { title: '你掌权，但不耐烦', line: '你开局最猛，也最想快点结束。你能把一盘散沙捏成队形，可一旦局面稳了，你的注意力就飘到下一件事上。你最怕的不是难，是慢。' },

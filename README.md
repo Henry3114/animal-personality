@@ -62,6 +62,11 @@ python tools/cute_scenes.py    # 场景：裁水印、抹掉会被白卡切断�
 脚本做三件事：从四边灌水去白底（不伤动物内部的奶油色）、按墨迹面积
 归一化视觉体积、限制轮廓到圆心的最大距离，保证放进圆形头像不被裁。
 
+跑完会额外生成 `assets/animals/cute-images.js`：5 张 400px 头像内联成
+data URI（约 144KB），页面直接用它当 `src`，**不再有单独的图片请求**。
+原因是国内访问 github.io 时经常个别图片请求失败，页面上就会出现几个
+空白圆。改了头像要重跑脚本，这个文件会自动更新。
+
 改文案直接改 `cards.html` 里的中文；换结果组合改 c7/c8/c9 的
 `typeName` / `typeSub` / `punch` / `traits`，全文在 `data.js` 的 `COMBOS`。
 

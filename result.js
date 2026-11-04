@@ -14,7 +14,7 @@
   /* ===== 填充页面 ===== */
   document.getElementById('resName').textContent = r.animal.name + ' · ' + r.base.name;
   document.getElementById('resRole').textContent = r.animal.role + ' · ' + r.animal.tag;
-  document.getElementById('resImg').src = 'assets/animals/cute/' + r.animal.id + '.webp';
+  document.getElementById('resImg').src = ANIMAL_SRC(r.animal.id);
   document.getElementById('resImg').alt = r.animal.name;
   document.getElementById('comboTitle').textContent = r.combo.title;
   document.getElementById('comboLine').textContent = r.combo.line;
@@ -380,7 +380,7 @@
         fail();
       }
     };
-    img.src = 'assets/animals/cute/' + r.animal.id + '.webp';
+    img.src = ANIMAL_SRC(r.animal.id);
 
     function fail() {
       saveBtn.disabled = false;

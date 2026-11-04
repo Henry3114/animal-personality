@@ -39,6 +39,7 @@
     elCur.textContent = state.step + 1;
     elStage.textContent = STAGE_LABEL[q.stage] || '';
     elBar.style.width = ((state.step) / total * 100) + '%';
+    document.title = '第 ' + (state.step + 1) + ' / ' + total + ' 题 · 动物原型人格测试';
 
     elQ.textContent = q.text;
     elHint.textContent = q.hint || '';
@@ -52,7 +53,7 @@
       b.type = 'button';
       b.className = 'opt' + (isDead ? ' dead' : '');
       b.setAttribute('aria-label', (isDead ? '已放弃的 ' : '选择 ') + a.name);
-      b.innerHTML = '<div class="av"><img src="assets/animals/cute/' + a.id + '.webp" alt=""></div>' +
+      b.innerHTML = '<div class="av"><img src="' + ANIMAL_SRC(a.id) + '" alt=""></div>' +
                     '<span class="opt-name">' + a.name + '</span>';
       if (!isDead) {
         b.addEventListener('click', function () { pick(a.name, b); });

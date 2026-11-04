@@ -382,10 +382,10 @@ body::before {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 11px;
+  gap: 12px;
 }
 .opt {
-  width: calc(50% - 5.5px);
+  width: calc(50% - 6px);
   padding: 16px 8px 13px;
   border: none;
   border-radius: 20px;
@@ -657,10 +657,24 @@ body::before {
   .res-avatar img { height: 100px; }
 }
 
-/* 桌面端：居中的一列 */
+/* 桌面端：把内容收成一张居中的卡片，不然宽屏上就是中间一条窄带 */
 @media (min-width: 560px) {
-  body { background: #F7EFE4; }
+  body { background: #EFDFCB; }
   .page { max-width: 460px; }
+}
+
+@media (min-width: 720px) {
+  body { padding: 34px 0; }
+  .page {
+    width: 500px;
+    max-width: 500px;
+    min-height: calc(100vh - 68px);
+    padding: 26px 30px 30px;
+    background: var(--cream);
+    border-radius: 34px;
+    box-shadow: 0 26px 64px rgba(160, 118, 82, .16),
+                0 0 0 1px rgba(214, 184, 155, .28);
+  }
 }
 
 /* ---------- 矮屏压缩，保证一屏内完成 ---------- */
