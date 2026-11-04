@@ -466,6 +466,150 @@ body::before {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ---------- 介绍页（开始之前） ---------- */
+.intro-page {
+  padding-top: 22px;
+  padding-bottom: 42px;
+}
+
+.intro-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.back-link {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  text-decoration: none;
+  letter-spacing: .06em;
+}
+.back-link:active { color: var(--orange-d); }
+.intro-kicker {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-indent: .18em;
+  color: #B7A08D;
+}
+
+.intro-head {
+  margin-top: 30px;
+  text-align: left;
+}
+.intro-title {
+  font-size: 27px;
+  line-height: 1.5;
+  font-weight: 800;
+  letter-spacing: .01em;
+  color: var(--ink);
+}
+.intro-lede {
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.92;
+  color: var(--ink-2);
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.intro-lede b {
+  color: var(--orange-d);
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+/* 三条理论：一张卡，内部用细线分隔 */
+.theory {
+  margin-top: 24px;
+  padding: 2px 20px 4px;
+}
+.theory-item {
+  display: flex;
+  gap: 13px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.theory-item:last-child { border-bottom: none; padding-bottom: 14px; }
+.theory-item:first-child { padding-top: 14px; }
+
+.theory-no {
+  flex: 0 0 auto;
+  padding-top: 2px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+}
+.theory-body h3 {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.6;
+  letter-spacing: .01em;
+  color: var(--ink);
+}
+.theory-body p {
+  margin-top: 7px;
+  font-size: 13.8px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.theory-body b { color: var(--ink); font-weight: 700; }
+
+/* 五只动物 */
+.five-card { margin-top: 14px; }
+.five { margin-top: 2px; }
+.five-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.five-row:last-child { border-bottom: none; padding-bottom: 2px; }
+.five-av {
+  flex: 0 0 auto;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--orange-soft);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.five-av img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 2px;
+}
+.five-name {
+  flex: 0 0 auto;
+  width: 1.7em;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  color: var(--ink);
+}
+.five-say {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* 免责说明 */
+.disc {
+  margin-top: 16px;
+  padding: 14px 17px;
+  border-radius: 16px;
+  background: #FBF0E4;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: #8B7563;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+.intro-foot { margin-top: 24px; }
+
 /* ---------- 结果页 ---------- */
 .result-page {
   padding-top: 0;

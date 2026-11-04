@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FDF7F0">
+<title>开始之前 · 这套题从哪来 · 动物原型人格测试</title>
+<meta name="description" content="这套题借了三条老线索：荣格的原型、类型学的双层结构、投射测验的取舍逻辑。读一分钟，再开始。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23D9784A'/%3E%3Cg fill='%23fff'%3E%3Cellipse cx='16' cy='20' rx='7' ry='5.8'/%3E%3Cellipse cx='7.4' cy='12.6' rx='2.9' ry='3.5'/%3E%3Cellipse cx='12.8' cy='7.8' rx='2.9' ry='3.7'/%3E%3Cellipse cx='19.2' cy='7.8' rx='2.9' ry='3.7'/%3E%3Cellipse cx='24.6' cy='12.6' rx='2.9' ry='3.5'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="page intro-page">
+
+  <div class="intro-top">
+    <a href="index.html" class="back-link">← 封面</a>
+    <span class="intro-kicker">开始之前</span>
+  </div>
+
+  <header class="intro-head">
+    <h1 class="intro-title">在放弃谁之前，<br>先说说这套题从哪来</h1>
+    <p class="intro-lede">它不是一份临床量表，也不打算给你贴标签。它只是把三条很老的线索拼在了一起：<b>原型</b>、<b>类型</b>、<b>投射</b>。</p>
+  </header>
+
+  <section class="card theory">
+
+    <article class="theory-item">
+      <div class="theory-no">01</div>
+      <div class="theory-body">
+        <h3>动物，是最老的那种原型</h3>
+        <p>荣格把那些反复出现在神话、梦境和寓言里的形象，叫作<b>原型</b>。它们不属于某一个人，而是人类共有的心理底片。动物是其中最古老的一类载体——狮子、马、牛、羊、猴在故事里站了几千年，各自背着一种活法。这套题只是把它们请了回来。</p>
+      </div>
+    </article>
+
+    <article class="theory-item">
+      <div class="theory-no">02</div>
+      <div class="theory-body">
+        <h3>人格是两层，不是一顶帽子</h3>
+        <p>荣格在《心理类型》里说，人有一项用得最顺手的心理机能，旁边还有一项辅助机能替它兜底。后来的 MBTI 就是从这个结构长出来的。这里沿用同一件事：<b>主导的那只</b>，是你在压力下最先出手的方式；<b>第二只</b>，是垫在下面的底色。5 只主导 × 4 种底色，正好 20 种。</p>
+      </div>
+    </article>
+
+    <article class="theory-item">
+      <div class="theory-no">03</div>
+      <div class="theory-body">
+        <h3>不问你，让你放弃</h3>
+        <p>自陈量表问「你是不是这样的人」，答案里总掺着「我希望我是」。投射测验换了个办法：罗夏给你一团墨迹，TAT 给你一幅看不清的画，让你把自己的内心填进去。这套题给的是一场资源不够的处境——水只够一部分人喝，你必须放弃。<b>放弃的顺序，比任何自我描述都诚实。</b></p>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="card five-card">
+    <h2 class="card-h"><span class="spark">🐾</span>五只动物，五种活法</h2>
+    <div class="card-hr"></div>
+    <div class="five" id="five"></div>
+  </section>
+
+  <div class="disc">
+    这是一份通俗人格测验，用来照见自己、开启一场对话。它不构成心理诊断，也不适合用于招聘筛选或临床评估。你随时可以不认同结果。
+  </div>
+
+  <div class="intro-foot">
+    <button class="btn btn-primary" id="goBtn">我准备好了 · 开始 6 道题</button>
+    <p class="start-note">6 道题 · 没有标准答案 · 中途不能反悔</p>
+  </div>
+
+</main>
+
+<script src="assets/animals/cute-images.js"></script>
+<script src="data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* 五只动物：头像 + 一句话，直接取自 data.js，避免与结果页说法不一致 */
+  var box = document.getElementById('five');
+  ANIMALS.forEach(function (a) {
+    var row = document.createElement('div');
+    row.className = 'five-row';
+    row.innerHTML =
+      '<div class="five-av"><img src="' + ANIMAL_SRC(a.id) + '" alt=""></div>' +
+      '<span class="five-name">' + a.name + '</span>' +
+      '<span class="five-say">' + a.tag + '</span>';
+    box.appendChild(row);
+  });
+
+  document.getElementById('goBtn').addEventListener('click', function () {
+    location.href = 'test.html';
+  });
+})();
+</script>
+</body>
+</html>
