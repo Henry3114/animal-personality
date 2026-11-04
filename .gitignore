@@ -1,11 +1,10 @@
 # 本地工具与产物，不进仓库
-tools/
 shots/
 out/
-cards.html
 
 # 未处理的素材原图
-assets/scenes/
+assets/scenes/*
+!assets/scenes/cards/
 assets/animals/*.png
 assets/bg_desert.png
 

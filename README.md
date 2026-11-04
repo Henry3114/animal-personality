@@ -34,6 +34,23 @@ var GATE_ON  = true;      // 改成 false 即完全免费开放
 var PASSCODE = 'ap2026';  // 卡密，大小写不敏感
 ```
 
+## 小红书图文
+
+10 张成品图由 `cards.html` 渲染，不在仓库里（体积大），本地生成：
+
+```bash
+python tools/cards.py          # 全部
+python tools/cards.py c3 c5    # 只出某几张
+```
+
+- `cards.html`：10 张卡片模板，`#c1`—`#c10` 用 hash 定位，1242×1660
+- `tools/cards.py`：Playwright 逐张截图，输出到 `out/`
+- `assets/scenes/cards/`：铅笔场景图（webp），一题一张
+- 发布文案、标题、话题、评论引导见 `out/文案.md`
+
+改文案直接改 `cards.html` 里的中文；换结果组合改 c7/c8/c9 的
+`typeName` / `typeSub` / `punch` / `traits`，全文在 `data.js` 的 `COMBOS`。
+
 ## 部署
 
 纯静态，推送到 GitHub 后开启 Pages（main 分支根目录）即可。
