@@ -48,6 +48,18 @@ python tools/cards.py c3 c5    # 只出某几张
 - `assets/scenes/cards/`：铅笔场景图（webp），一题一张
 - 发布文案、标题、话题、评论引导见 `out/文案.md`
 
+## 动物头像
+
+网站用 Q 版头像（`assets/animals/cute/*.webp`），小红书卡片仍用木刻版画
+（`assets/animals/clean/*.webp`），两套并存。
+
+```bash
+python tools/cute_animals.py   # 从 cute_src/ 原图去底、归一化、导 webp
+```
+
+脚本做三件事：从四边灌水去白底（不伤动物内部的奶油色）、按墨迹面积
+归一化视觉体积、限制轮廓到圆心的最大距离，保证放进圆形头像不被裁。
+
 改文案直接改 `cards.html` 里的中文；换结果组合改 c7/c8/c9 的
 `typeName` / `typeSub` / `punch` / `traits`，全文在 `data.js` 的 `COMBOS`。
 

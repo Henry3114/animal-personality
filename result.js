@@ -14,7 +14,7 @@
   /* ===== 填充页面 ===== */
   document.getElementById('resName').textContent = r.animal.name + ' · ' + r.base.name;
   document.getElementById('resRole').textContent = r.animal.role + ' · ' + r.animal.tag;
-  document.getElementById('resImg').src = 'assets/animals/clean/' + r.animal.id + '.webp';
+  document.getElementById('resImg').src = 'assets/animals/cute/' + r.animal.id + '.webp';
   document.getElementById('resImg').alt = r.animal.name;
   document.getElementById('comboTitle').textContent = r.combo.title;
   document.getElementById('comboLine').textContent = r.combo.line;
@@ -184,7 +184,7 @@
     ctx.fill();
 
     if (img && img.complete && img.naturalWidth) {
-      var ih = 172;
+      var ih = 208;
       var iw = img.naturalWidth * (ih / img.naturalHeight);
       if (iw > rad * 1.62) { iw = rad * 1.62; ih = img.naturalHeight * (iw / img.naturalWidth); }
       ctx.save();
@@ -380,7 +380,7 @@
         fail();
       }
     };
-    img.src = 'assets/animals/clean/' + r.animal.id + '.webp';
+    img.src = 'assets/animals/cute/' + r.animal.id + '.webp';
 
     function fail() {
       saveBtn.disabled = false;

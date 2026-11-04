@@ -52,7 +52,7 @@
       b.type = 'button';
       b.className = 'opt' + (isDead ? ' dead' : '');
       b.setAttribute('aria-label', (isDead ? '已放弃的 ' : '选择 ') + a.name);
-      b.innerHTML = '<div class="av"><img src="assets/animals/clean/' + a.id + '.webp" alt=""></div>' +
+      b.innerHTML = '<div class="av"><img src="assets/animals/cute/' + a.id + '.webp" alt=""></div>' +
                     '<span class="opt-name">' + a.name + '</span>';
       if (!isDead) {
         b.addEventListener('click', function () { pick(a.name, b); });

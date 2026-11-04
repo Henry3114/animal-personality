@@ -3,6 +3,8 @@ shots/
 out/
 
 # 未处理的素材原图
+assets/animals/cute_src/
+assets/animals/cute/*.png
 assets/scenes/*
 !assets/scenes/cards/
 assets/animals/*.png
