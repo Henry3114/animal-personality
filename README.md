@@ -8,11 +8,11 @@
 
 | 文件 | 作用 |
 |---|---|
-| `index.html` | 封面 + 卡密门禁 |
+| `index.html` | 封面 + 说明卡 + 卡密门禁 |
 | `test.html` | 六道题，选项固定五只动物，已放弃的置灰 |
 | `result.html` | 结果页 + Canvas 长图导出 |
 | `data.js` | 5 只原型文案、20 组组合文案、6 道题、计分函数 |
-| `style.css` | 全站样式 |
+| `style.css` | 全站样式（奶油底 #FDF7F0 / 白卡 / 陶土橙 #D9784A） |
 | `test.js` / `result.js` | 答题与结果渲染 |
 
 ## 计分

@@ -3,59 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#FAF7F0">
+<meta name="theme-color" content="#FDF7F0">
 <title>你的结果 · 动物原型人格测试</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316232F'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='%23FAF7F0' font-family='SimSun,serif'%3E%E5%8A%A8%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23D9784A'/%3E%3Cg fill='%23fff'%3E%3Cellipse cx='16' cy='20' rx='7' ry='5.8'/%3E%3Cellipse cx='7.4' cy='12.6' rx='2.9' ry='3.5'/%3E%3Cellipse cx='12.8' cy='7.8' rx='2.9' ry='3.7'/%3E%3Cellipse cx='19.2' cy='7.8' rx='2.9' ry='3.7'/%3E%3Cellipse cx='24.6' cy='12.6' rx='2.9' ry='3.5'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <main class="page result-page">
   <div class="res-head">
+    <div class="res-avatar"><img id="resImg" src="" alt=""></div>
     <div class="res-kicker">你的动物原型</div>
     <h1 class="res-name" id="resName">—</h1>
     <div class="res-role" id="resRole"></div>
   </div>
 
-  <div class="res-hero"><img id="resImg" src="" alt=""></div>
-
-  <div class="res-combo">
-    <div class="res-combo-title" id="comboTitle"></div>
-    <p class="res-combo-line" id="comboLine"></p>
-  </div>
+  <section class="card combo-card">
+    <div class="combo-title" id="comboTitle"></div>
+    <p class="combo-line" id="comboLine"></p>
+  </section>
 
   <section class="sec">
-    <div class="sec-label">你是这样的人</div>
+    <h2 class="card-h"><span class="spark">🐾</span>你是这样的人</h2>
+    <div class="card-hr"></div>
     <p class="sec-body" id="desc"></p>
   </section>
 
   <section class="sec">
-    <div class="sec-label">核心优势</div>
+    <h2 class="card-h"><span class="spark">✨</span>核心优势</h2>
+    <div class="card-hr"></div>
     <ul class="ul" id="strengths"></ul>
   </section>
 
   <section class="sec">
-    <div class="sec-label">可能会绊住你的</div>
+    <h2 class="card-h"><span class="spark">🌿</span>可能会绊住你的</h2>
+    <div class="card-hr"></div>
     <ul class="ul warn" id="blind"></ul>
   </section>
 
   <section class="sec">
-    <div class="sec-label">撑不住的时候</div>
+    <h2 class="card-h"><span class="spark">🌙</span>撑不住的时候</h2>
+    <div class="card-hr"></div>
     <p class="quote" id="stress"></p>
   </section>
 
   <section class="sec">
-    <div class="sec-label">给你的建议</div>
+    <h2 class="card-h"><span class="spark">💡</span>给你的建议</h2>
+    <div class="card-hr"></div>
     <p class="sec-body" id="advice"></p>
   </section>
 
   <section class="sec">
-    <div class="sec-label">你身上的另一只</div>
+    <h2 class="card-h"><span class="spark">🌱</span>你身上的另一只</h2>
+    <div class="card-hr"></div>
     <p class="sec-body" id="baseLine"></p>
   </section>
 
   <section class="sec">
-    <div class="sec-label">你放弃它们的顺序</div>
+    <h2 class="card-h"><span class="spark">🧭</span>你放弃它们的顺序</h2>
+    <div class="card-hr"></div>
     <div class="trail" id="trail"></div>
   </section>
 

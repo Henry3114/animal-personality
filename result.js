@@ -21,9 +21,9 @@
   document.getElementById('desc').textContent = r.animal.desc;
   document.getElementById('stress').textContent = r.animal.stress;
   document.getElementById('advice').textContent = r.animal.advice;
-  document.getElementById('baseLine').textContent =
-    '底色是' + r.base.name + '（' + r.base.role + '）——' + r.base.tag +
+  var baseText = '底色是' + r.base.name + '（' + r.base.role + '）——' + r.base.tag +
     '。它不像主导的那只那么显眼，但你做决定时的第一反应，常常是它。';
+  document.getElementById('baseLine').textContent = baseText;
 
   fillList('strengths', r.animal.strengths);
   fillList('blind', r.animal.blind);
@@ -74,16 +74,31 @@
   /* ============================================================
      Canvas 长图
      ============================================================ */
-  var CW = 1242;
-  var PAD = 100;
-  var INK = '#16232F';
-  var INK2 = '#3D5870';
-  var INK3 = '#8399AB';
-  var PAPER = '#FAF7F0';
-  var ACCENT = '#B5502E';
 
-  var SERIF = '"Songti SC","STSong","SimSun",serif';
+  var CW = 1242;
+  var MARGIN = 62;
+  var CARD_W = CW - MARGIN * 2;
+  var PAD = 54;
+  var TEXT_W = CARD_W - PAD * 2;
+  var GAP = 18;
+
+  var CREAM = '#FDF7F0';
+  var CARD = '#FFFFFF';
+  var INK = '#3A342D';
+  var INK2 = '#6E6358';
+  var INK3 = '#A2958A';
+  var ORANGE = '#D9784A';
+  var ORANGE_SOFT = '#FCEEE2';
+  var DOT = '#F0A66F';
+  var DOT_WARN = '#E6A78C';
+  var LINE = '#F2E6D9';
+
   var SANS = '-apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+
+  var TITLE_TOP = 52;      // 标题距卡片顶
+  var DIVIDER_Y = 118;     // 分割线距卡片顶
+  var FIRST_LINE = 30;     // 首行基线距分割线
+  var BOTTOM = 54;         // 末行基线距卡片底
 
   function wrapText(ctx, text, maxW) {
     var lines = [];
@@ -93,7 +108,6 @@
       var ch = text[i];
       var test = line + ch;
       if (ctx.measureText(test).width > maxW && line) {
-        // 行首禁则：标点不放在行首，挪到上一行
         if (noStart.indexOf(ch) > -1) {
           lines.push(line + ch);
           line = '';
@@ -109,192 +123,6 @@
     return lines;
   }
 
-  function drawCard(img, cb) {
-    var c = document.createElement('canvas');
-    c.width = CW;
-    c.height = 4200;
-    var ctx = c.getContext('2d');
-
-    var maxW = CW - PAD * 2;
-    var y = 0;
-
-    // 底色
-    ctx.fillStyle = PAPER;
-    ctx.fillRect(0, 0, CW, c.height);
-
-    // 顶部淡蓝灰氛围
-    var g = ctx.createLinearGradient(0, 0, 0, 560);
-    g.addColorStop(0, 'rgba(198, 218, 232, .55)');
-    g.addColorStop(1, 'rgba(250, 247, 240, 0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, CW, 560);
-
-    // 顶部小字
-    y = 132;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = INK3;
-    ctx.font = '32px ' + SANS;
-    ctx.fillText('动 物 原 型 人 格 测 试', CW / 2, y);
-
-    // 组合名
-    y += 188;
-    ctx.fillStyle = INK;
-    ctx.font = '700 150px ' + SERIF;
-    ctx.fillText(r.animal.name + ' · ' + r.base.name, CW / 2, y);
-
-    // 角色
-    y += 96;
-    ctx.fillStyle = INK2;
-    ctx.font = '38px ' + SANS;
-    ctx.fillText(r.animal.role + ' · ' + r.animal.tag, CW / 2, y);
-
-    // 动物图
-    y += 40;
-    if (img && img.complete && img.naturalWidth) {
-      var ih = 360;
-      var iw = img.naturalWidth * (ih / img.naturalHeight);
-      if (iw > maxW * 0.8) { iw = maxW * 0.8; ih = img.naturalHeight * (iw / img.naturalWidth); }
-      ctx.globalCompositeOperation = 'multiply';
-      ctx.drawImage(img, (CW - iw) / 2, y, iw, ih);
-      ctx.globalCompositeOperation = 'source-over';
-      y += ih;
-    } else {
-      y += 360;
-    }
-
-    // 组合标题
-    y += 108;
-    ctx.fillStyle = INK;
-    ctx.font = '700 54px ' + SERIF;
-    var tl = wrapText(ctx, r.combo.title, maxW);
-    tl.forEach(function (ln, i) { ctx.fillText(ln, CW / 2, y + i * 76); });
-    y += (tl.length - 1) * 76;
-
-    // 组合正文
-    y += 74;
-    ctx.fillStyle = INK2;
-    ctx.font = '38px ' + SANS;
-    ctx.textAlign = 'left';
-    var bl = wrapText(ctx, r.combo.line, maxW);
-    bl.forEach(function (ln, i) { ctx.fillText(ln, PAD, y + i * 66); });
-    y += (bl.length - 1) * 66;
-
-    // 分割线
-    y += 76;
-    line(ctx, y);
-    y += 26;
-
-    // 标题 + 段落工具
-    function section(label, bodyLines, opt) {
-      opt = opt || {};
-      y += 62;
-      ctx.textAlign = 'left';
-      ctx.fillStyle = INK3;
-      ctx.font = '29px ' + SANS;
-      ctx.fillText(label, PAD, y);
-      y += 60;
-
-      if (opt.bullets) {
-        ctx.font = '37px ' + SANS;              // 测量与绘制必须同字体
-        bodyLines.forEach(function (t) {
-          var ls = wrapText(ctx, t, maxW - 36);
-          ls.forEach(function (ln, i) {
-            if (i === 0) {
-              ctx.fillStyle = opt.warn ? ACCENT : INK3;
-              ctx.beginPath();
-              ctx.arc(PAD + 9, y - 12, 5.5, 0, Math.PI * 2);
-              ctx.fill();
-            }
-            ctx.fillStyle = INK;
-            ctx.font = '37px ' + SANS;
-            ctx.fillText(ln, PAD + 36, y);
-            y += 62;
-          });
-          y += 12;
-        });
-      } else {
-        ctx.font = '37px ' + SANS;
-        var all = [];
-        bodyLines.forEach(function (t) {
-          wrapText(ctx, t, maxW).forEach(function (ln) { all.push(ln); });
-        });
-        ctx.fillStyle = INK;
-        ctx.font = '37px ' + SANS;
-        all.forEach(function (ln) {
-          ctx.fillText(ln, PAD, y);
-          y += 66;
-        });
-      }
-    }
-
-    section('你 是 这 样 的 人', [r.animal.desc]);
-    section('核 心 优 势', r.animal.strengths, { bullets: true });
-    section('可 能 会 绊 住 你 的', r.animal.blind, { bullets: true, warn: true });
-    section('撑 不 住 的 时 候', [r.animal.stress]);
-    section('给 你 的 建 议', [r.animal.advice]);
-
-    // 放弃顺序
-    y += 76;
-    line(ctx, y);
-    y += 44;
-    ctx.fillStyle = INK3;
-    ctx.font = '30px ' + SANS;
-    ctx.textAlign = 'left';
-    ctx.fillText('你 放 弃 它 们 的 顺 序', PAD, y);
-    y += 66;
-
-    var seq = r.given.concat([r.taken]).filter(Boolean);
-    var px = PAD;
-    ctx.font = '38px ' + SANS;
-    seq.forEach(function (name, i) {
-      if (i) {
-        ctx.fillStyle = INK3;
-        ctx.fillText('→', px, y);
-        px += ctx.measureText('→').width + 20;
-      }
-      var w = ctx.measureText(name).width + 52;
-      ctx.fillStyle = (i === seq.length - 1) ? INK : 'rgba(22,35,47,.075)';
-      roundRect(ctx, px, y - 40, w, 62, 31);
-      ctx.fill();
-      ctx.fillStyle = (i === seq.length - 1) ? PAPER : INK2;
-      ctx.textAlign = 'center';
-      ctx.fillText(name, px + w / 2, y + 4);
-      ctx.textAlign = 'left';
-      px += w + 18;
-    });
-    y += 60;
-
-    // 底部
-    y += 134;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = INK3;
-    ctx.font = '28px ' + SANS;
-    ctx.fillText('— 没有标准答案，也没有更好的动物 —', CW / 2, y);
-
-    y += 48;
-    ctx.fillStyle = '#A9B8C4';
-    ctx.font = '26px ' + SANS;
-    ctx.fillText('20 种动物人格原型 · 自我探索参考', CW / 2, y);
-
-    // 裁剪
-    var realH = Math.min(c.height, y + 108);
-    var out = document.createElement('canvas');
-    out.width = CW;
-    out.height = realH;
-    out.getContext('2d').drawImage(c, 0, 0, CW, realH, 0, 0, CW, realH);
-
-    cb(out);
-  }
-
-  function line(ctx, y) {
-    ctx.strokeStyle = 'rgba(22,35,47,.13)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(PAD, y);
-    ctx.lineTo(CW - PAD, y);
-    ctx.stroke();
-  }
-
   function roundRect(ctx, x, y, w, h, rad) {
     ctx.beginPath();
     ctx.moveTo(x + rad, y);
@@ -303,6 +131,222 @@
     ctx.arcTo(x, y + h, x, y, rad);
     ctx.arcTo(x, y, x + w, y, rad);
     ctx.closePath();
+  }
+
+  function cardBg(ctx, x, y, w, h, rad) {
+    ctx.save();
+    ctx.shadowColor = 'rgba(184, 137, 96, .18)';
+    ctx.shadowBlur = 26;
+    ctx.shadowOffsetY = 10;
+    ctx.fillStyle = CARD;
+    roundRect(ctx, x, y, w, h, rad);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  /* 段落卡：先量后排 */
+  function measureSec(ctx, s) {
+    var maxW = s.bullets ? TEXT_W - 34 : TEXT_W;
+    var lh = s.bullets ? 62 : 60;
+    var gap = s.bullets ? 12 : 20;
+    ctx.font = '36px ' + SANS;
+    var items = s.body.map(function (t) { return wrapText(ctx, t, maxW); });
+    var contentH = 0;
+    items.forEach(function (ls, i) {
+      if (i > 0) contentH += gap;
+      contentH += ls.length * lh;
+    });
+    var h = DIVIDER_Y + FIRST_LINE + contentH - lh + BOTTOM;
+    return { items: items, h: h, lh: lh, gap: gap };
+  }
+
+  function drawCard(img, cb) {
+    var c = document.createElement('canvas');
+    c.width = CW;
+    c.height = 5600;
+    var ctx = c.getContext('2d');
+
+    ctx.fillStyle = CREAM;
+    ctx.fillRect(0, 0, CW, c.height);
+
+    // 顶部暖光
+    var glow = ctx.createRadialGradient(CW / 2, -140, 40, CW / 2, -140, 900);
+    glow.addColorStop(0, '#FFF3E4');
+    glow.addColorStop(1, 'rgba(255,243,228,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, CW, 760);
+
+    // ---- 头部头像 ----
+    var cx = CW / 2, cy = 244, rad = 112;
+    ctx.beginPath();
+    ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+    ctx.fillStyle = ORANGE_SOFT;
+    ctx.fill();
+
+    if (img && img.complete && img.naturalWidth) {
+      var ih = 172;
+      var iw = img.naturalWidth * (ih / img.naturalHeight);
+      if (iw > rad * 1.62) { iw = rad * 1.62; ih = img.naturalHeight * (iw / img.naturalWidth); }
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(img, cx - iw / 2, cy - ih / 2, iw, ih);
+      ctx.restore();
+    }
+
+    // ---- 标题 ----
+    var y = cy + rad + 78;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = INK3;
+    ctx.font = '600 30px ' + SANS;
+    ctx.fillText('你 的 动 物 原 型', CW / 2, y);
+
+    y += 118;
+    ctx.fillStyle = ORANGE;
+    ctx.font = '800 100px ' + SANS;
+    ctx.fillText(r.animal.name + ' · ' + r.base.name, CW / 2, y);
+
+    y += 62;
+    ctx.fillStyle = INK3;
+    ctx.font = '34px ' + SANS;
+    ctx.fillText(r.animal.role + ' · ' + r.animal.tag, CW / 2, y);
+
+    // ---- 组合卡 ----
+    var ct = y + 52;
+    ctx.font = '800 46px ' + SANS;
+    var tl = wrapText(ctx, r.combo.title, TEXT_W);
+    ctx.font = '36px ' + SANS;
+    var bl = wrapText(ctx, r.combo.line, TEXT_W);
+    var titleB = ct + 54 + 44;
+    var bodyB = titleB + (tl.length - 1) * 66 + 44;
+    var ch = bodyB + (bl.length - 1) * 60 + 44 - ct;
+    cardBg(ctx, MARGIN, ct, CARD_W, ch, 34);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = INK;
+    ctx.font = '800 46px ' + SANS;
+    tl.forEach(function (ln, i) { ctx.fillText(ln, CW / 2, titleB + i * 66); });
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = INK2;
+    ctx.font = '36px ' + SANS;
+    bl.forEach(function (ln, i) { ctx.fillText(ln, MARGIN + PAD, bodyB + i * 60); });
+
+    y = ct + ch;
+
+    // ---- 段落卡 ----
+    var SECS = [
+      { icon: '🐾', label: '你是这样的人', body: [r.animal.desc] },
+      { icon: '✨', label: '核心优势', body: r.animal.strengths, bullets: true },
+      { icon: '🌿', label: '可能会绊住你的', body: r.animal.blind, bullets: true, warn: true },
+      { icon: '🌙', label: '撑不住的时候', body: [r.animal.stress] },
+      { icon: '💡', label: '给你的建议', body: [r.animal.advice] },
+      { icon: '🌱', label: '你身上的另一只', body: [baseText] }
+    ];
+
+    SECS.forEach(function (s) {
+      var top = y + GAP;
+      var m = measureSec(ctx, s);
+      cardBg(ctx, MARGIN, top, CARD_W, m.h, 34);
+
+      // 小标题
+      ctx.textAlign = 'left';
+      ctx.fillStyle = INK;
+      ctx.font = '800 40px ' + SANS;
+      ctx.fillText(s.icon + '  ' + s.label, MARGIN + PAD, top + DIVIDER_Y - 26);
+
+      // 分割线
+      ctx.strokeStyle = LINE;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(MARGIN + PAD, top + DIVIDER_Y);
+      ctx.lineTo(MARGIN + CARD_W - PAD, top + DIVIDER_Y);
+      ctx.stroke();
+
+      // 正文
+      var baseline = top + DIVIDER_Y + FIRST_LINE;
+      m.items.forEach(function (ls, i) {
+        if (i > 0) baseline += m.gap;
+        ls.forEach(function (ln, j) {
+          var by = baseline + j * m.lh;
+          if (s.bullets && j === 0) {
+            ctx.fillStyle = s.warn ? DOT_WARN : DOT;
+            ctx.beginPath();
+            ctx.arc(MARGIN + PAD + 8, by - 12, 6.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.fillStyle = INK2;
+          ctx.font = '36px ' + SANS;
+          ctx.fillText(ln, MARGIN + PAD + (s.bullets ? 34 : 0), by);
+        });
+        baseline += ls.length * m.lh;
+      });
+
+      y = top + m.h;
+    });
+
+    // ---- 放弃顺序 ----
+    var seq = r.given.concat([r.taken]).filter(Boolean);
+    var tt = y + GAP;
+    var th = 226;
+    cardBg(ctx, MARGIN, tt, CARD_W, th, 34);
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = INK;
+    ctx.font = '800 40px ' + SANS;
+    ctx.fillText('🧭  你放弃它们的顺序', MARGIN + PAD, tt + DIVIDER_Y - 26);
+
+    ctx.strokeStyle = LINE;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(MARGIN + PAD, tt + DIVIDER_Y);
+    ctx.lineTo(MARGIN + CARD_W - PAD, tt + DIVIDER_Y);
+    ctx.stroke();
+
+    var px = MARGIN + PAD;
+    var py = tt + DIVIDER_Y + 58;
+    ctx.font = '600 34px ' + SANS;
+    ctx.textAlign = 'center';
+    seq.forEach(function (name, i) {
+      if (i) {
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#D8C8B6';
+        ctx.fillText('→', px, py);
+        px += ctx.measureText('→').width + 16;
+        ctx.textAlign = 'center';
+      }
+      var w = ctx.measureText(name).width + 48;
+      ctx.fillStyle = (i === seq.length - 1) ? ORANGE : '#F9F0E6';
+      roundRect(ctx, px, py - 38, w, 58, 29);
+      ctx.fill();
+      ctx.fillStyle = (i === seq.length - 1) ? '#fff' : INK2;
+      ctx.fillText(name, px + w / 2, py + 2);
+      px += w + 14;
+    });
+
+    y = tt + th;
+
+    // ---- 页脚 ----
+    y += 86;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = INK3;
+    ctx.font = '30px ' + SANS;
+    ctx.fillText('— 没有标准答案，也没有更好的动物 —', CW / 2, y);
+
+    y += 50;
+    ctx.fillStyle = '#C6B6A6';
+    ctx.font = '27px ' + SANS;
+    ctx.fillText('20 种动物人格原型 · 自我探索参考', CW / 2, y);
+
+    // ---- 裁剪 ----
+    var realH = Math.min(c.height, y + 92);
+    var out = document.createElement('canvas');
+    out.width = CW;
+    out.height = realH;
+    out.getContext('2d').drawImage(c, 0, 0, CW, realH, 0, 0, CW, realH);
+
+    cb(out);
   }
 
   /* ===== 保存 ===== */
