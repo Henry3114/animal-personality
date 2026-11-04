@@ -469,7 +469,7 @@ body::before {
 /* ---------- 介绍页（开始之前） ---------- */
 .intro-page {
   padding-top: 22px;
-  padding-bottom: 42px;
+  padding-bottom: 26px;
 }
 
 .intro-top {
@@ -492,123 +492,77 @@ body::before {
   color: #B7A08D;
 }
 
-.intro-head {
-  margin-top: 30px;
-  text-align: left;
+/* 品牌区：比封面小一号，避免同一套标题连着出现两次 */
+.intro-brand {
+  margin-top: 22px;
+  text-align: center;
 }
-.intro-title {
-  font-size: 27px;
-  line-height: 1.5;
+.intro-brand .paw { width: 58px; height: 58px; }
+.intro-brand .paw svg { width: 30px; height: 30px; }
+.intro-brand .brand-en { margin-top: 14px; font-size: 11.5px; }
+.intro-brand .brand-cn { margin-top: 6px; font-size: 28px; }
+.intro-brand .brand-sub { margin-top: 8px; font-size: 12.5px; letter-spacing: .02em; }
+
+/* 介绍白卡 */
+.about {
+  margin-top: 22px;
+  padding: 24px 22px 26px;
+  text-align: center;
+}
+.about-h {
+  font-size: 21px;
   font-weight: 800;
-  letter-spacing: .01em;
-  color: var(--ink);
-}
-.intro-lede {
-  margin-top: 15px;
-  font-size: 14px;
-  line-height: 1.92;
-  color: var(--ink-2);
-  text-align: justify;
-  text-justify: inter-ideograph;
-}
-.intro-lede b {
+  letter-spacing: .08em;
+  text-indent: .08em;
   color: var(--orange-d);
-  font-weight: 700;
-  letter-spacing: .02em;
 }
-
-/* 三条理论：一张卡，内部用细线分隔 */
-.theory {
-  margin-top: 24px;
-  padding: 2px 20px 4px;
+.about-hr {
+  width: 54px;
+  height: 5px;
+  border-radius: 5px;
+  background: #F4D9C4;
+  margin: 13px auto 17px;
 }
-.theory-item {
-  display: flex;
-  gap: 13px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--line);
-}
-.theory-item:last-child { border-bottom: none; padding-bottom: 14px; }
-.theory-item:first-child { padding-top: 14px; }
-
-.theory-no {
-  flex: 0 0 auto;
-  padding-top: 2px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .04em;
-  color: var(--orange);
-  font-variant-numeric: tabular-nums;
-}
-.theory-body h3 {
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 1.6;
-  letter-spacing: .01em;
-  color: var(--ink);
-}
-.theory-body p {
-  margin-top: 7px;
-  font-size: 13.8px;
-  line-height: 1.9;
+.about-p {
+  font-size: 14.5px;
+  line-height: 2.02;
   color: var(--ink-2);
-  text-align: justify;
-  text-justify: inter-ideograph;
+  letter-spacing: .01em;
 }
-.theory-body b { color: var(--ink); font-weight: 700; }
 
 /* 五只动物 */
-.five-card { margin-top: 14px; }
-.five { margin-top: 2px; }
-.five-row {
+.intro-animals { margin-top: 22px; }
+.intro-animals .cover-animal .av { max-width: 58px; }
+
+/* 三个标签 */
+.badges {
+  margin-top: 18px;
   display: flex;
-  align-items: center;
-  gap: 13px;
-  padding: 11px 0;
-  border-bottom: 1px dashed var(--line);
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
-.five-row:last-child { border-bottom: none; padding-bottom: 2px; }
-.five-av {
-  flex: 0 0 auto;
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  background: var(--orange-soft);
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.five-av img {
-  width: 100%; height: 100%;
-  object-fit: contain;
-  padding: 3px;
-}
-.five-name {
-  flex: 0 0 auto;
-  width: 1.7em;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: .1em;
-  color: var(--ink);
-}
-.five-say {
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--ink-2);
-}
-
-/* 免责说明 */
-.disc {
-  margin-top: 16px;
-  padding: 14px 17px;
-  border-radius: 16px;
-  background: #FBF0E4;
+.badges span {
+  padding: 8px 15px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
   font-size: 12.5px;
-  line-height: 1.85;
-  color: #8B7563;
-  text-align: justify;
-  text-justify: inter-ideograph;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: .04em;
 }
 
-.intro-foot { margin-top: 24px; }
+.intro-page .start-wrap { margin-top: 20px; }
+
+.disc-line {
+  margin-top: 14px;
+  order: 3;            /* 矮屏下 .start-wrap 被封面规则提到 order:1，这里要跟到按钮之后 */
+  text-align: center;
+  font-size: 11.5px;
+  color: #B9AA9C;
+  letter-spacing: .04em;
+}
 
 /* ---------- 结果页 ---------- */
 .result-page {
@@ -823,6 +777,25 @@ body::before {
 
 /* ---------- 矮屏压缩，保证一屏内完成 ---------- */
 @media (max-height: 780px) {
+  /* 介绍页：矮屏压到一屏内，按钮不能藏到折叠线以下 */
+  .intro-page { padding-top: 16px; padding-bottom: 18px; }
+  .intro-brand { margin-top: 12px; }
+  .intro-brand .paw { width: 42px; height: 42px; }
+  .intro-brand .paw svg { width: 23px; height: 23px; }
+  .intro-brand .brand-en { margin-top: 9px; font-size: 11px; }
+  .intro-brand .brand-cn { margin-top: 5px; font-size: 25px; }
+  .intro-brand .brand-sub { margin-top: 6px; font-size: 12px; }
+  .about { margin-top: 16px; padding: 17px 20px 18px; }
+  .about-h { font-size: 19px; }
+  .about-hr { margin: 11px auto 12px; }
+  .about-p { font-size: 13.6px; line-height: 1.88; }
+  .intro-animals { margin-top: 10px; }
+  .intro-animals .cover-animal .av { max-width: 44px; }
+  .badges { margin-top: 10px; gap: 7px; }
+  .badges span { padding: 7px 13px; font-size: 12px; }
+  .intro-page .start-wrap { margin-top: 10px; }
+  .disc-line { margin-top: 6px; }
+
   .cover { padding-top: 30px; }
   .paw { width: 62px; height: 62px; }
   .paw svg { width: 32px; height: 32px; }
