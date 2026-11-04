@@ -3,197 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <style>
+  /* 与站点同一套视觉：奶油底 / 白圆角卡 / 陶土橙 / 暖灰文字 */
   @page { size: 1242px 1660px; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { width: 1242px; height: 1660px; overflow: hidden;
-         font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-         background: #F6F0E2; color: #2C2A24; }
-  body::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .28;
-    mix-blend-mode: multiply; background-image: url('assets/noise.webp'); background-size: 220px 220px; }
-  .card { position: absolute; inset: 0; width: 1242px; height: 1660px; display: none; overflow: hidden; }
-  .card.on { display: block; }
+  :root {
+    --cream:#FDF7F0; --card:#FFFFFF; --ink:#3A342D; --ink2:#6E6358; --ink3:#A2958A;
+    --orange:#D9784A; --orange-d:#C4633A; --orange-soft:#FCEEE2; --line:#F2E6D9;
+    --shadow:0 18px 44px rgba(184,137,96,.16);
+    --sans:"Microsoft YaHei","PingFang SC",sans-serif;
+  }
+  body { width:1242px; height:1660px; overflow:hidden; background:#FDF7F0;
+         font-family:var(--sans); color:#3A342D; -webkit-font-smoothing:antialiased; }
 
-  /* 场景图铺满，顶部裁掉一段空天 */
-  .scene { position: absolute; inset: 0;
-           background-position: center bottom; background-size: 1242px auto; background-repeat: no-repeat; }
+  .card { position:absolute; inset:0; width:1242px; height:1660px; display:none; overflow:hidden; }
+  .card.on { display:block; }
 
-  .stage { position: absolute; left: 108px; right: 108px; text-align: center; }
-  .chapter { font-size: 25px; letter-spacing: 7px; color: #8B7550; font-weight: 700; }
-  .story { font-size: 40px; line-height: 2.0; font-weight: 500; letter-spacing: 1.5px; color: #2C2A24; }
-  .story p { margin: 0; }
-  .ask { font-size: 90px; font-weight: 700; letter-spacing: 4px; color: #26241F; margin-top: 26px; }
-  .hint { font-size: 26px; letter-spacing: 4px; color: #7A6C54; margin-top: 32px; font-weight: 600; }
-  .foot { position: absolute; bottom: 62px; left: 0; right: 0; text-align: center;
-          font-size: 26px; letter-spacing: 5px; color: #6E6350; font-weight: 600; }
+  /* 场景铺满，底部对齐（插画下方是沙丘，上方是空天） */
+  .scene { position:absolute; inset:0; background-position:center top;
+           background-size:1242px auto; background-repeat:no-repeat; }
+  /* 封面用的顶部暖光 */
+  .glow { position:absolute; inset:0;
+          background:
+            radial-gradient(60% 34% at 50% 0%, #FFF1DF 0%, rgba(255,241,223,0) 100%),
+            radial-gradient(46% 26% at 50% 100%, #FBE8D4 0%, rgba(251,232,212,0) 100%); }
 
-  /* 结果页 */
-  .rtag { font-size: 27px; letter-spacing: 8px; color: #8B7550; font-weight: 700; }
-  .typeName { font-size: 118px; font-weight: 700; letter-spacing: 14px; color: #26241F; }
-  .typeSub { font-size: 30px; letter-spacing: 7px; color: #7A6C54; margin-top: 22px; font-weight: 600; }
-  .punch { font-size: 54px; font-weight: 700; line-height: 1.66; letter-spacing: 2px; color: #26241F; }
-  .traits { font-size: 28px; letter-spacing: 2px; color: #5F5646; font-weight: 500; }
+  /* 极淡的奶油罩，压住插画细节，让文字更干净 */
+  .veil { position:absolute; inset:0;
+          background:linear-gradient(180deg, rgba(253,247,240,.55) 0%, rgba(253,247,240,.10) 42%, rgba(253,247,240,0) 62%); }
 
-  /* 封面 */
-  .cover-lead { font-size: 38px; line-height: 1.84; font-weight: 500; letter-spacing: 1px; }
-  .cover-ask { font-size: 92px; font-weight: 700; letter-spacing: 2px; margin-top: 26px; color: #26241F; }
-  .arow { position: absolute; left: 0; right: 0; display: flex; justify-content: center;
-          align-items: flex-end; }
-  .acell { display: flex; flex-direction: column; align-items: center; }
-  .acell img { display: block; mix-blend-mode: multiply; }
-  .aname { font-size: 42px; font-weight: 700; letter-spacing: 5px; margin-top: 8px; color: #26241F; }
-  .sh { width: 82%; height: 30px; margin-top: -13px;
-        background: radial-gradient(50% 50% at 50% 50%, rgba(120,92,54,.30) 0%, rgba(120,92,54,0) 74%); }
+  /* 通用文字块 */
+  .stage { position:absolute; left:96px; right:96px; text-align:center; }
+
+  .tag { display:inline-flex; align-items:center; gap:12px;
+         font-size:26px; font-weight:700; letter-spacing:7px; color:#C4633A; }
+  .tag::before { content:''; width:12px; height:12px; border-radius:50%; background:#D9784A; }
+
+  .story { font-size:40px; line-height:1.98; font-weight:500; letter-spacing:1.2px; color:#3A342D; }
+  .story p { margin:0; }
+  .ask { font-size:92px; font-weight:800; letter-spacing:3px; color:#2E2A24; line-height:1.28; }
+  .hint { font-size:27px; letter-spacing:4px; color:#8A7C6E; font-weight:600; }
+
+  /* 白卡 */
+  .paper { position:absolute; left:84px; right:84px;
+           background:#FFFFFF; border-radius:48px;
+           box-shadow:0 20px 50px rgba(170,124,84,.14);
+           padding:66px 62px 62px; text-align:center; }
+  .paper .divider { width:96px; height:6px; border-radius:6px; background:#F4D9C4;
+                    margin:0 auto 40px; }
+
+  .foot { position:absolute; bottom:66px; left:0; right:0; text-align:center;
+          font-size:27px; letter-spacing:5px; color:#7C6E60; font-weight:600; }
+  .foot span { display:inline-block; padding:15px 34px; border-radius:100px;
+               background:rgba(253,247,240,.86); box-shadow:0 6px 18px rgba(170,124,84,.10); }
+
+  /* ---------- 封面 ---------- */
+  .c-title { font-size:96px; font-weight:800; letter-spacing:6px; color:#2E2A24; }
+  .c-title em { font-style:normal; color:#D9784A; }
+  .c-lead { font-size:38px; line-height:1.86; font-weight:500; letter-spacing:1px; color:#4A423A; }
+  .arow { position:absolute; left:0; right:0; display:flex; justify-content:center; align-items:flex-end; }
+  .acell { display:flex; flex-direction:column; align-items:center; }
+  .acell .disc { width:200px; height:200px; border-radius:50%;
+                 background:rgba(255,255,255,.85);
+                 box-shadow:0 12px 26px rgba(184,137,96,.13);
+                 display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .acell .disc img { width:100%; height:100%; object-fit:contain; padding:4px; }
+  .aname { font-size:38px; font-weight:700; letter-spacing:4px; margin-top:16px; color:#2E2A24; }
+  .c-note { font-size:27px; letter-spacing:2px; color:#8A7C6E; font-weight:600; }
+
+  /* ---------- 结果 ---------- */
+  .rtag { font-size:27px; font-weight:700; letter-spacing:8px; color:#C4633A; }
+  .typeName { font-size:132px; font-weight:800; letter-spacing:14px; color:#2E2A24; line-height:1.16; }
+  .typeName em { font-style:normal; color:#E08A5C; }
+  .typeSub { font-size:30px; letter-spacing:6px; color:#8A7C6E; margin-top:20px; font-weight:600; }
+  .punch { font-size:56px; font-weight:800; line-height:1.62; letter-spacing:1px; color:#2E2A24; }
+  .traits { font-size:28px; letter-spacing:2px; color:#6E6358; font-weight:500; }
+  .duo { display:flex; justify-content:center; align-items:flex-end; gap:44px; }
+  .duo .disc { width:250px; height:250px; border-radius:50%;
+               background:#FCEEE2; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .duo .disc img { width:100%; height:100%; object-fit:contain; padding:4px; }
+  .duo .nm { font-size:30px; font-weight:700; letter-spacing:3px; margin-top:12px; color:#6E6358; text-align:center; }
 </style>
 </head>
 <body>
 
 <!-- 01 封面 -->
 <div class="card" id="c1">
-  <div class="scene" style="background-image:url('assets/scenes/cards/footprints.webp'); opacity:.2"></div>
-  <div class="stage" style="top:92px">
-    <div class="chapter">20 种动物人格原型</div>
-    <div class="cover-lead" style="margin-top:34px">你现在与以下五只动物在沙漠里共生，<br>如果你想走出沙漠，<br>就必须要放弃其中一只</div>
-    <div class="cover-ask">你会放弃谁？</div>
+  <div class="glow"></div>
+
+  <div class="stage" style="top:196px">
+    <div class="tag">20 种动物人格原型</div>
+    <div class="c-lead" style="margin-top:40px">你现在与以下五只动物在沙漠里共生，<br>如果你想走出沙漠，<br>就必须要放弃其中一只</div>
+    <div class="c-title" style="margin-top:36px">你会放弃<em>谁</em>？</div>
   </div>
 
-  <div class="arow" style="bottom:700px; gap:52px">
-    <div class="acell"><img src="assets/animals/clean/ox.webp"     style="height:248px;"><div class="sh"></div><div class="aname">牛</div></div>
-    <div class="acell"><img src="assets/animals/clean/sheep.webp"  style="height:254px;"><div class="sh"></div><div class="aname">羊</div></div>
-    <div class="acell"><img src="assets/animals/clean/monkey.webp" style="height:242px;"><div class="sh"></div><div class="aname">猴子</div></div>
+  <div class="arow" style="bottom:512px; gap:26px">
+    <div class="acell"><div class="disc"><img src="assets/animals/cute/ox.webp"></div><div class="aname">牛</div></div>
+    <div class="acell"><div class="disc"><img src="assets/animals/cute/sheep.webp"></div><div class="aname">羊</div></div>
+    <div class="acell"><div class="disc"><img src="assets/animals/cute/monkey.webp"></div><div class="aname">猴子</div></div>
+    <div class="acell"><div class="disc"><img src="assets/animals/cute/lion.webp"></div><div class="aname">狮子</div></div>
+    <div class="acell"><div class="disc"><img src="assets/animals/cute/horse.webp"></div><div class="aname">马</div></div>
   </div>
 
-  <div class="arow" style="bottom:290px; gap:84px">
-    <div class="acell"><img src="assets/animals/clean/lion.webp"  style="height:318px;"><div class="sh"></div><div class="aname">狮子</div></div>
-    <div class="acell"><img src="assets/animals/clean/horse.webp" style="height:296px;"><div class="sh"></div><div class="aname">马</div></div>
+  <div style="position:absolute; left:0; right:0; bottom:342px; text-align:center" class="c-note">
+    测完给你一张专属结果图，可以直接存下来
   </div>
-
-  <div style="position:absolute; left:0; right:0; bottom:112px; text-align:center;
-              font-size:27px; letter-spacing:3px; color:#7A6C54; font-weight:600">测完给你一张专属结果图，可以直接存下来</div>
-  <div class="foot">6 道题 · 1 分钟 · 没有标准答案</div>
+  <div style="position:absolute; left:0; right:0; bottom:256px; text-align:center;
+              font-size:27px; letter-spacing:5px; color:#A2958A; font-weight:600">
+    6 道题 · 1 分钟 · 没有标准答案
+  </div>
 </div>
 
 <!-- 02 再放弃一只 -->
 <div class="card" id="c2">
-  <div class="scene" style="background-image:url('assets/scenes/cards/footprints.webp')"></div>
-  <div class="stage" style="top:250px">
-    <div class="chapter">第 2 轮 / 共 4 轮</div>
-    <div class="story" style="margin-top:44px">
+  <div class="scene" style="background-image:url('assets/scenes/cute/footprints.webp')"></div>
+  <div class="veil"></div>
+  <div class="stage" style="top:120px">
+    <div class="tag">第 2 轮 / 共 4 轮</div>
+  </div>
+  <div class="paper" style="top:214px">
+    <div class="divider"></div>
+    <div class="story">
       <p>你与剩下四只动物继续前行，</p>
       <p>走了一段路程后，</p>
       <p>你必须再放弃一只动物，</p>
     </div>
-    <div class="ask">你会放弃谁？</div>
-    <div class="hint">先在心里选一个，再往下翻</div>
+    <div class="ask" style="margin-top:44px">你会放弃谁？</div>
+    <div class="hint" style="margin-top:34px">先在心里选一个，再往下翻</div>
   </div>
 </div>
 
 <!-- 03 绿洲干涸 -->
 <div class="card" id="c3">
-  <div class="scene" style="background-image:url('assets/scenes/cards/dry_well.webp')"></div>
-  <div class="stage" style="top:118px">
-    <div class="chapter">第 3 轮 / 共 4 轮</div>
-    <div class="story" style="margin-top:36px; font-size:34px; line-height:1.92">
+  <div class="scene" style="background-image:url('assets/scenes/cute/dry_well.webp'); background-position:center 40px"></div>
+  <div class="veil"></div>
+  <div class="stage" style="top:120px">
+    <div class="tag">第 3 轮 / 共 4 轮</div>
+  </div>
+  <div class="paper" style="top:214px">
+    <div class="divider"></div>
+    <div class="story" style="font-size:38px">
       <p>你与剩下三只动物继续前行，</p>
       <p>突然，你们发现了绿洲。</p>
       <p>但是，水已经干涸。</p>
       <p>这时，你又必须放弃一只。</p>
     </div>
-    <div class="ask" style="font-size:82px; margin-top:20px">你会放弃谁？</div>
-    <div class="hint">还剩三只</div>
+    <div class="ask" style="font-size:84px; margin-top:36px">你会放弃谁？</div>
+    <div class="hint" style="margin-top:30px">还剩三只</div>
   </div>
 </div>
 
 <!-- 04 只能带一只走 -->
 <div class="card" id="c4">
-  <div class="scene" style="background-image:url('assets/scenes/cards/two_dune.webp')"></div>
-  <div class="stage" style="top:158px">
-    <div class="chapter">第 4 轮 / 共 4 轮</div>
-    <div class="story" style="margin-top:40px; font-size:40px; line-height:1.94">
+  <div class="scene" style="background-image:url('assets/scenes/cute/two_dune.webp')"></div>
+  <div class="veil"></div>
+  <div class="stage" style="top:120px">
+    <div class="tag">第 4 轮 / 共 4 轮</div>
+  </div>
+  <div class="paper" style="top:214px">
+    <div class="divider"></div>
+    <div class="story">
       <p>你与剩下两只动物继续前行，</p>
       <p>在走出沙漠前，</p>
-      <p>你只能带一只动物离开沙漠，</p>
-      <p>最后</p>
+      <p>你只能带一只动物离开沙漠。</p>
     </div>
-    <div class="ask" style="font-size:80px; margin-top:16px; line-height:1.38">你会选择谁？<br>又会放弃谁？</div>
+    <div class="ask" style="font-size:80px; margin-top:38px">你会选择谁？<br>又会放弃谁？</div>
   </div>
 </div>
 
 <!-- 05 递水 -->
 <div class="card" id="c5">
-  <div class="scene" style="background-image:url('assets/scenes/cards/water_empty.webp')"></div>
+  <div class="scene" style="background-image:url('assets/scenes/cute/water_empty.webp')"></div>
+  <div class="veil"></div>
   <div class="stage" style="top:120px">
-    <div class="chapter">还差两道题 · 这题不计分</div>
-    <div class="story" style="margin-top:40px; font-size:39px; line-height:1.95">
+    <div class="tag" style="letter-spacing:5px">还差两道题 · 这题不计分</div>
+  </div>
+  <div class="paper" style="top:230px">
+    <div class="divider"></div>
+    <div class="story" style="font-size:40px">
       <p>走出沙漠的那一刻，你忽然想到：</p>
       <p>如果当初下一场雨，五只都能活下来。</p>
     </div>
-    <div class="ask" style="font-size:84px; margin-top:30px">你最想先把水递给谁？</div>
+    <div class="ask" style="font-size:82px; margin-top:40px">你最想先把水<br>递给谁？</div>
   </div>
 </div>
 
 <!-- 06 回望 -->
 <div class="card" id="c6">
-  <div class="scene" style="background-image:url('assets/scenes/cards/look_back.webp')"></div>
-  <div class="stage" style="top:196px">
-    <div class="chapter">最后一题</div>
-    <div class="story" style="margin-top:52px; font-size:44px; line-height:2.06">
+  <div class="scene" style="background-image:url('assets/scenes/cute/look_back.webp')"></div>
+  <div class="veil"></div>
+  <div class="stage" style="top:120px">
+    <div class="tag">最后一题</div>
+  </div>
+  <div class="paper" style="top:250px">
+    <div class="divider"></div>
+    <div class="story" style="font-size:44px; line-height:2.06">
       <p>走出沙漠之后，</p>
       <p>你回头看了一眼。</p>
     </div>
-    <div class="ask" style="font-size:82px; margin-top:34px">最舍不得的是谁？</div>
-    <div class="hint">答完就出结果</div>
+    <div class="ask" style="font-size:82px; margin-top:40px">最舍不得的是谁？</div>
+    <div class="hint" style="margin-top:32px">答完就出结果</div>
   </div>
 </div>
 
 <!-- 07 结果：狮·马 -->
 <div class="card" id="c7">
-  <div class="scene" style="background-image:url('assets/scenes/cards/lion_horse.webp')"></div>
-  <div class="stage" style="top:170px">
+  <div class="scene" style="background-image:url('assets/scenes/cute/five_walk.webp')"></div>
+  <div class="veil"></div>
+  <div class="paper" style="top:150px">
     <div class="rtag">20 种动物人格 · 测出来是这个</div>
-    <div class="typeName" style="margin-top:44px">狮 · 马</div>
+    <div class="duo" style="margin-top:44px">
+      <div><div class="disc"><img src="assets/animals/cute/lion.webp"></div></div>
+      <div><div class="disc"><img src="assets/animals/cute/horse.webp"></div></div>
+    </div>
+    <div class="typeName" style="margin-top:34px; font-size:112px">狮<em>·</em>马</div>
     <div class="typeSub">掌控为主 · 奔跑为底</div>
-    <div class="punch" style="margin-top:64px">你不是不合群，<br>你是受不了被安排。</div>
-    <div class="traits" style="margin-top:52px">天生扛事 · 讨厌被安排 · 越没人管越靠谱</div>
+    <div class="punch" style="margin-top:52px">你不是不合群，<br>你是受不了被安排。</div>
+    <div class="traits" style="margin-top:44px">天生扛事 · 讨厌被安排 · 越没人管越靠谱</div>
   </div>
 </div>
 
 <!-- 08 结果：牛·羊 -->
 <div class="card" id="c8">
-  <div class="scene" style="background-image:url('assets/scenes/cards/ox_sheep.webp')"></div>
-  <div class="stage" style="top:140px">
+  <div class="scene" style="background-image:url('assets/scenes/cute/five_walk.webp')"></div>
+  <div class="veil"></div>
+  <div class="paper" style="top:150px">
     <div class="rtag">20 种动物人格 · 测出来是这个</div>
-    <div class="typeName" style="margin-top:44px">牛 · 羊</div>
+    <div class="duo" style="margin-top:44px">
+      <div><div class="disc"><img src="assets/animals/cute/ox.webp"></div></div>
+      <div><div class="disc"><img src="assets/animals/cute/sheep.webp"></div></div>
+    </div>
+    <div class="typeName" style="margin-top:34px; font-size:112px">牛<em>·</em>羊</div>
     <div class="typeSub">实干为主 · 守护为底</div>
-    <div class="punch" style="margin-top:44px">你从不拒绝，<br>所以没人问你要不要。</div>
-    <div class="traits" style="margin-top:34px">从不拒绝 · 记得所有人的口味 · 累了也不说</div>
+    <div class="punch" style="margin-top:52px">你从不拒绝，<br>所以没人问你要不要。</div>
+    <div class="traits" style="margin-top:44px">从不拒绝 · 记得所有人的口味 · 累了也不说</div>
   </div>
 </div>
 
 <!-- 09 结果：羊·猴 -->
 <div class="card" id="c9">
-  <div class="scene" style="background-image:url('assets/scenes/cards/sheep_monkey.webp')"></div>
-  <div class="stage" style="top:170px">
+  <div class="scene" style="background-image:url('assets/scenes/cute/five_walk.webp')"></div>
+  <div class="veil"></div>
+  <div class="paper" style="top:150px">
     <div class="rtag">20 种动物人格 · 测出来是这个</div>
-    <div class="typeName" style="margin-top:44px">羊 · 猴</div>
+    <div class="duo" style="margin-top:44px">
+      <div><div class="disc"><img src="assets/animals/cute/sheep.webp"></div></div>
+      <div><div class="disc"><img src="assets/animals/cute/monkey.webp"></div></div>
+    </div>
+    <div class="typeName" style="margin-top:34px; font-size:112px">羊<em>·</em>猴</div>
     <div class="typeSub">守护为主 · 机敏为底</div>
-    <div class="punch" style="margin-top:64px">你在人群里最热闹，<br>回家最空。</div>
-    <div class="traits" style="margin-top:52px">场面上最熟 · 回家最空 · 报喜不报忧</div>
+    <div class="punch" style="margin-top:52px">你在人群里最热闹，<br>回家最空。</div>
+    <div class="traits" style="margin-top:44px">场面上最熟 · 回家最空 · 报喜不报忧</div>
   </div>
 </div>
 
 <!-- 10 结尾 -->
 <div class="card" id="c10">
-  <div class="scene" style="background-image:url('assets/scenes/cards/five_walk.webp')"></div>
-  <div class="stage" style="top:196px">
-    <div class="chapter">沙漠走完了</div>
-    <div class="ask" style="font-size:90px; margin-top:44px; line-height:1.44">20 种动物人格<br>你是哪一种</div>
-    <div class="story" style="margin-top:46px; font-size:33px; line-height:1.9; font-weight:400">
+  <div class="scene" style="background-image:url('assets/scenes/cute/footprints.webp')"></div>
+  <div class="veil"></div>
+  <div class="stage" style="top:130px">
+    <div class="tag">沙漠走完了</div>
+  </div>
+  <div class="paper" style="top:230px">
+    <div class="divider"></div>
+    <div class="ask" style="font-size:88px; line-height:1.44">20 种动物人格<br>你是哪一种</div>
+    <div class="story" style="margin-top:48px; font-size:34px; line-height:1.9; font-weight:400; color:#6E6358">
       <p>六道题，没有标准答案。</p>
       <p>但你的每一次放弃，</p>
       <p>都在暴露你在乎什么。</p>
     </div>
   </div>
-  <div class="foot">评论区告诉我：你第 1 轮放弃了谁</div>
+  <div class="foot"><span>评论区告诉我：你第 1 轮放弃了谁</span></div>
 </div>
 
 <script>

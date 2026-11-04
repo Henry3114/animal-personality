@@ -45,16 +45,18 @@ python tools/cards.py c3 c5    # 只出某几张
 
 - `cards.html`：10 张卡片模板，`#c1`—`#c10` 用 hash 定位，1242×1660
 - `tools/cards.py`：Playwright 逐张截图，输出到 `out/`
-- `assets/scenes/cards/`：铅笔场景图（webp），一题一张
+- `assets/scenes/cute/`：Q 版沙漠插画（webp），一题一张
 - 发布文案、标题、话题、评论引导见 `out/文案.md`
 
 ## 动物头像
 
-网站用 Q 版头像（`assets/animals/cute/*.webp`），小红书卡片仍用木刻版画
-（`assets/animals/clean/*.webp`），两套并存。
+网站和小红书卡片都用 Q 版：头像在 `assets/animals/cute/`，场景在
+`assets/scenes/cute/`。早期那套木刻版画（`assets/animals/clean/`）和铅笔
+场景（`assets/scenes/cards/`）已经不用了，留作备份。
 
 ```bash
-python tools/cute_animals.py   # 从 cute_src/ 原图去底、归一化、导 webp
+python tools/cute_animals.py   # 头像：从 cute_src/ 原图去底、归一化、导 webp
+python tools/cute_scenes.py    # 场景：裁水印、抹掉会被白卡切断的太阳、导 webp
 ```
 
 脚本做三件事：从四边灌水去白底（不伤动物内部的奶油色）、按墨迹面积
