@@ -97,7 +97,7 @@
 
   var TITLE_TOP = 52;      // 标题距卡片顶
   var DIVIDER_Y = 118;     // 分割线距卡片顶
-  var FIRST_LINE = 30;     // 首行基线距分割线
+  var FIRST_LINE = 46;     // 首行基线距分割线
   var BOTTOM = 54;         // 末行基线距卡片底
 
   function wrapText(ctx, text, maxW) {
@@ -147,7 +147,7 @@
   /* 段落卡：先量后排 */
   function measureSec(ctx, s) {
     var maxW = s.bullets ? TEXT_W - 34 : TEXT_W;
-    var lh = s.bullets ? 62 : 60;
+    var lh = s.bullets ? 66 : 64;
     var gap = s.bullets ? 12 : 20;
     ctx.font = '36px ' + SANS;
     var items = s.body.map(function (t) { return wrapText(ctx, t, maxW); });
