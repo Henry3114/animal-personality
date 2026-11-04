@@ -70,6 +70,17 @@
   .aname { font-size:38px; font-weight:700; letter-spacing:4px; margin-top:16px; color:#2E2A24; }
   .c-note { font-size:27px; letter-spacing:2px; color:#8A7C6E; font-weight:600; }
 
+  /* ---------- 说明卡 ---------- */
+  .intro-h { font-size:74px; font-weight:800; letter-spacing:8px; color:#2E2A24; }
+  .intro-p { margin-top:42px; font-size:33px; line-height:1.98; font-weight:500;
+             letter-spacing:1px; color:#4A423A; text-align:justify; }
+  .intro-p b { color:#C4633A; font-weight:700; }
+  .acell.sm .disc { width:152px; height:152px; box-shadow:0 10px 22px rgba(184,137,96,.12); }
+  .acell.sm .aname { font-size:31px; letter-spacing:3px; margin-top:14px; }
+  .pills { position:absolute; left:0; right:0; display:flex; justify-content:center; gap:20px; }
+  .pills span { padding:19px 38px; border-radius:100px; background:#FCEEE2;
+                font-size:28px; font-weight:700; letter-spacing:2px; color:#C4633A; }
+
   /* ---------- 结果 ---------- */
   .rtag { font-size:27px; font-weight:700; letter-spacing:8px; color:#C4633A; }
   .typeName { font-size:132px; font-weight:800; letter-spacing:14px; color:#2E2A24; line-height:1.16; }
@@ -113,8 +124,44 @@
   </div>
 </div>
 
-<!-- 02 再放弃一只 -->
+<!-- 02 说明 -->
 <div class="card" id="c2">
+  <div class="glow"></div>
+
+  <div class="stage" style="top:172px">
+    <div class="tag">开始之前</div>
+  </div>
+
+  <div class="paper" style="top:266px">
+    <div class="divider"></div>
+    <div class="intro-h">动物塑测试</div>
+    <div class="intro-p">专业的性格评估工具，基于多个经过验证的心理测量量表，通过 <b>6</b> 道精心设计的问题，帮助您科学地了解自己的动物性格原型，揭示隐藏在内心深处的本质特征。</div>
+  </div>
+
+  <div class="arow" style="top:862px; gap:22px">
+    <div class="acell sm"><div class="disc"><img src="assets/animals/cute/ox.webp"></div><div class="aname">牛</div></div>
+    <div class="acell sm"><div class="disc"><img src="assets/animals/cute/sheep.webp"></div><div class="aname">羊</div></div>
+    <div class="acell sm"><div class="disc"><img src="assets/animals/cute/monkey.webp"></div><div class="aname">猴</div></div>
+    <div class="acell sm"><div class="disc"><img src="assets/animals/cute/lion.webp"></div><div class="aname">狮</div></div>
+    <div class="acell sm"><div class="disc"><img src="assets/animals/cute/horse.webp"></div><div class="aname">马</div></div>
+  </div>
+
+  <div class="pills" style="top:1200px">
+    <span>20 种原型</span>
+    <span>多维解析</span>
+    <span>专属结果卡</span>
+  </div>
+
+  <div style="position:absolute; left:0; right:0; top:1322px; text-align:center;
+              font-size:27px; letter-spacing:5px; color:#A2958A; font-weight:600">
+    六道题 · 1 分钟 · 没有标准答案
+  </div>
+
+  <div class="foot"><span>下一张，第一轮开始</span></div>
+</div>
+
+<!-- 03 再放弃一只 -->
+<div class="card" id="c3">
   <div class="scene" style="background-image:url('assets/scenes/cute/footprints.webp')"></div>
   <div class="veil"></div>
   <div class="stage" style="top:120px">
@@ -132,8 +179,8 @@
   </div>
 </div>
 
-<!-- 03 绿洲干涸 -->
-<div class="card" id="c3">
+<!-- 04 绿洲干涸 -->
+<div class="card" id="c4">
   <div class="scene" style="background-image:url('assets/scenes/cute/dry_well.webp'); background-position:center 40px"></div>
   <div class="veil"></div>
   <div class="stage" style="top:120px">
@@ -152,8 +199,8 @@
   </div>
 </div>
 
-<!-- 04 只能带一只走 -->
-<div class="card" id="c4">
+<!-- 05 只能带一只走 -->
+<div class="card" id="c5">
   <div class="scene" style="background-image:url('assets/scenes/cute/two_dune.webp')"></div>
   <div class="veil"></div>
   <div class="stage" style="top:120px">
@@ -170,8 +217,8 @@
   </div>
 </div>
 
-<!-- 05 递水 -->
-<div class="card" id="c5">
+<!-- 06 递水 -->
+<div class="card" id="c6">
   <div class="scene" style="background-image:url('assets/scenes/cute/water_empty.webp')"></div>
   <div class="veil"></div>
   <div class="stage" style="top:120px">
@@ -187,8 +234,8 @@
   </div>
 </div>
 
-<!-- 06 回望 -->
-<div class="card" id="c6">
+<!-- 07 回望 -->
+<div class="card" id="c7">
   <div class="scene" style="background-image:url('assets/scenes/cute/look_back.webp')"></div>
   <div class="veil"></div>
   <div class="stage" style="top:120px">
@@ -205,8 +252,8 @@
   </div>
 </div>
 
-<!-- 07 结果：狮·马 -->
-<div class="card" id="c7">
+<!-- 08 结果：狮·马 -->
+<div class="card" id="c8">
   <div class="scene" style="background-image:url('assets/scenes/cute/five_walk.webp')"></div>
   <div class="veil"></div>
   <div class="paper" style="top:150px">
@@ -222,8 +269,8 @@
   </div>
 </div>
 
-<!-- 08 结果：牛·羊 -->
-<div class="card" id="c8">
+<!-- 09 结果：牛·羊 -->
+<div class="card" id="c9">
   <div class="scene" style="background-image:url('assets/scenes/cute/five_walk.webp')"></div>
   <div class="veil"></div>
   <div class="paper" style="top:150px">
@@ -239,8 +286,8 @@
   </div>
 </div>
 
-<!-- 09 结果：羊·猴 -->
-<div class="card" id="c9">
+<!-- 10 结果：羊·猴 -->
+<div class="card" id="c10">
   <div class="scene" style="background-image:url('assets/scenes/cute/five_walk.webp')"></div>
   <div class="veil"></div>
   <div class="paper" style="top:150px">
@@ -256,8 +303,8 @@
   </div>
 </div>
 
-<!-- 10 结尾 -->
-<div class="card" id="c10">
+<!-- 11 结尾 -->
+<div class="card" id="c11">
   <div class="scene" style="background-image:url('assets/scenes/cute/footprints.webp')"></div>
   <div class="veil"></div>
   <div class="stage" style="top:130px">
